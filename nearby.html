@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<title>Take · Nearby façon Snap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.6.0/dist/maplibre-gl.css">
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#FFFFFF; --muted:#F0F2F5; --raised:#FFFFFF;
+  --ink:#141414; --ink2:#6B6E73; --ink3:#84888E;
+  --line:#E3E6EA; --hair:#1414141A; --fg:#0A0A0A;
+  --yesFill:#008B45; --noFill:#C53637; --brand:#D81E31;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --muted:#16181C; --raised:#1E2126;
+    --ink:#E7E9EA; --ink2:#83898F; --ink3:#6B6F75;
+    --line:#2F3336; --hair:#FFFFFF1A; --fg:#E7E9EA;
+    --yesFill:#16A34A; --noFill:#DC5551;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --muted:#16181C; --raised:#1E2126;
+  --ink:#E7E9EA; --ink2:#83898F; --ink3:#6B6F75;
+  --line:#2F3336; --hair:#FFFFFF1A; --fg:#E7E9EA;
+  --yesFill:#16A34A; --noFill:#DC5551;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:21px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.page{max-width:390px;margin:0 auto;padding-bottom:64px}
+.intro{padding:calc(env(safe-area-inset-top,0px) + 28px) 16px 8px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);line-height:16px}
+h1{font-size:32px;line-height:36px;font-weight:800;letter-spacing:-.9px;margin:10px 0 12px}
+.lede{font-size:16px;line-height:23px;color:var(--ink2)} .lede b{color:var(--ink);font-weight:600}
+h2{font-size:20px;line-height:25px;font-weight:800;letter-spacing:-.5px;margin:28px 16px 10px}
+.list{list-style:none;margin:0 16px}
+.list li{display:flex;gap:12px;padding:11px 0;border-top:1px solid var(--hair);font-size:14.5px;line-height:20px;color:var(--ink2)}
+.list li:last-child{border-bottom:1px solid var(--hair)}
+.list b{flex:none;width:22px;height:22px;border-radius:50%;background:var(--fg);color:var(--bg);display:grid;place-items:center;font-size:11.5px;font-weight:700;margin-top:-1px}
+.list strong{color:var(--ink);font-weight:600}
+.src{font-size:12.5px;line-height:17px;color:var(--ink3);margin:8px 16px 0}
+.src a{color:inherit}
+table{width:calc(100% - 32px);margin:0 16px;border-collapse:collapse;font-size:13px;line-height:17px}
+th,td{text-align:left;padding:8px 6px 8px 0;border-top:1px solid var(--hair);vertical-align:top}
+th{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3)}
+td b{font-weight:700}
+.guess{display:inline-block;margin-left:4px;padding:0 6px;border-radius:9px;background:var(--muted);font-size:10.5px;font-weight:700;color:var(--ink2)}
+
+/* ── Le téléphone : plein bord, 390 pt ── */
+.phone{position:relative;height:760px;margin-top:18px;background:#0A0A0A;overflow:hidden;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);color:#F5F5F5}
+#map{position:absolute;inset:0}
+.sbar{position:absolute;left:0;right:0;top:0;height:48px;display:flex;align-items:center;justify-content:space-between;padding:4px 24px 0 34px;font-size:16px;font-weight:600;z-index:5;pointer-events:none}
+.topbar{position:absolute;left:0;right:0;top:48px;height:36px;display:flex;align-items:center;padding:0 16px;z-index:5;pointer-events:none}
+.topbar .side{flex:1}
+.topbar .labels{display:flex;gap:36px}
+.topbar .lab{font-size:24px;line-height:29px;font-weight:600;letter-spacing:-.1px;display:flex;align-items:center;gap:3px}
+.topbar .off{opacity:.62}
+.topbar .on{position:relative}
+.topbar .on::after{content:"";position:absolute;left:50%;bottom:-7px;width:26px;height:3px;border-radius:1.5px;background:#F5F5F5;transform:translateX(-50%)}
+.topbar .acts{flex:1;display:flex;justify-content:flex-end}
+.scrim{position:absolute;left:0;right:0;top:0;height:130px;background:linear-gradient(#0A0A0A,rgba(10,10,10,0));z-index:4;pointer-events:none}
+.hint{position:absolute;left:50%;top:100px;transform:translateX(-50%);z-index:5;padding:7px 12px;border-radius:999px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:12.5px;font-weight:600;color:#F5F5F5;white-space:nowrap;pointer-events:none;transition:opacity .3s}
+.tabbar{position:absolute;left:16px;right:16px;bottom:18px;height:64px;border-radius:32px;background:rgba(30,33,38,.86);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 0 0 1px rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-around;z-index:6}
+.tabbar .cur{position:absolute;left:4px;top:4px;width:83px;height:56px;border-radius:28px;background:rgba(255,255,255,.1)}
+.tabbar svg{position:relative;color:#C4C7CA}
+.tabbar .on svg{color:#FFF}
+
+/* La vague de recherche */
+.wave{position:absolute;z-index:7;pointer-events:none;width:0;height:0}
+.wave i{position:absolute;left:0;top:0;width:180px;height:180px;margin:-90px 0 0 -90px;border-radius:50%;border:2px solid rgba(255,255,255,.9);background:radial-gradient(circle,rgba(255,255,255,.18),rgba(255,255,255,0) 65%);transform:scale(.05);opacity:0;animation:ring 1.25s cubic-bezier(.2,.7,.3,1) infinite}
+.wave i:nth-child(2){animation-delay:.28s}
+.wave i:nth-child(3){animation-delay:.56s}
+.wave b{position:absolute;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#FFF;box-shadow:0 0 12px rgba(255,255,255,.9)}
+@keyframes ring{0%{transform:scale(.05);opacity:.95}70%{opacity:.35}100%{transform:scale(1);opacity:0}}
+.searching{position:absolute;left:50%;bottom:98px;transform:translateX(-50%);z-index:7;padding:8px 14px;border-radius:999px;background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:13px;font-weight:600;white-space:nowrap;display:none}
+
+/* Rien ici */
+.empty{position:absolute;left:16px;right:16px;bottom:98px;z-index:8;border-radius:22px;padding:16px 16px 14px;background:rgba(30,33,38,.92);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 0 0 1px rgba(255,255,255,.08),0 16px 40px rgba(0,0,0,.4);display:none}
+.empty h4{font-size:17px;line-height:22px;font-weight:700}
+.empty p{font-size:13.5px;line-height:19px;color:#A8ACB2;margin-top:3px}
+.empty .acts{display:flex;gap:8px;margin-top:12px}
+.empty .acts span{flex:1;height:40px;border-radius:20px;display:grid;place-items:center;font-size:14px;font-weight:700;cursor:pointer}
+.empty .acts .a{background:rgba(255,255,255,.12);color:#F5F5F5}
+.empty .acts .b{background:#F5F5F5;color:#000}
+
+/* La page de la zone, qu'on ferme */
+.backdrop{position:absolute;inset:0;z-index:9;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .25s}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:66%;z-index:10;background:var(--bg);color:var(--ink);border-radius:22px 22px 0 0;transform:translateY(102%);transition:transform .32s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.35)}
+.phone.open .sheet{transform:translateY(0)}
+.phone.open .backdrop{opacity:1;pointer-events:auto}
+.grab{width:36px;height:5px;border-radius:3px;background:var(--line);margin:8px auto 6px}
+.shead{display:flex;align-items:center;gap:10px;padding:4px 16px 10px;border-bottom:1px solid var(--hair)}
+.shead div{flex:1;min-width:0}
+.shead h4{font-size:20px;line-height:24px;font-weight:800;letter-spacing:-.5px}
+.shead p{font-size:12.5px;color:var(--ink2);font-weight:500}
+.close{width:32px;height:32px;border-radius:50%;background:var(--muted);display:grid;place-items:center;cursor:pointer;flex:none}
+.rows{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1}
+.zr{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--hair);align-items:flex-start}
+.zr .rk{width:18px;flex:none;font-size:15px;font-weight:800;color:var(--ink3);text-align:center;padding-top:1px}
+.zr .rk.top{color:var(--ink)}
+.zr .bd{flex:1;min-width:0}
+.zr .who{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2);font-weight:500;margin-bottom:3px}
+.zr .who img{width:18px;height:18px;border-radius:50%;object-fit:cover}
+.zr .who b{color:var(--ink);font-weight:600}
+.zr .q{font-size:15.5px;line-height:20px;font-weight:600;letter-spacing:-.2px}
+.zr .m{font-size:12.5px;font-weight:600;color:var(--ink2);margin-top:4px}
+.zr .th{width:56px;height:56px;border-radius:10px;object-fit:cover;flex:none;background:var(--muted)}
+
+/* Les boutons d'état sous le téléphone */
+.states{display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px 0}
+.states button{font:inherit;border:0;cursor:pointer;height:36px;padding:0 13px;border-radius:18px;background:var(--muted);color:var(--ink);font-size:13.5px;font-weight:600}
+.states button.on{background:var(--fg);color:var(--bg)}
+.cap{padding:10px 16px 0;font-size:13.5px;line-height:19px;color:var(--ink2)}
+.cap b{color:var(--ink);font-weight:600}
+footer{padding:40px 16px 0;font-size:12.5px;line-height:18px;color:var(--ink3)}
+footer a{color:inherit}
+.maplibregl-ctrl-attrib{font-size:9px!important;background:rgba(0,0,0,.4)!important;color:#999!important}
+.maplibregl-ctrl-attrib a{color:#bbb!important}
+</style>
+</head>
+<body>
+<div class="page">
+  <section class="intro">
+    <p class="eyebrow">Maquette interactive · 23 sept. 2026 · pour Adam</p>
+    <h1>Nearby, façon Snap.</h1>
+    <p class="lede">Une vraie carte, à tester au doigt. <b>Touche n'importe où</b> : une vague part de ton doigt, puis soit les takes du coin s'ouvrent dans une page qu'on <b>ferme</b> pour revenir sur la planète, soit « Aucun take dispo ». Les données sont inventées ; la carte, les gestes et les seuils sont ceux que je propose.</p>
+  </section>
+
+  <h2>Ce que j'ai compris</h2>
+  <ul class="list">
+    <li><b>1</b><span><strong>Plus de boule blanche par take.</strong> La carte montre l'activité : plus un endroit a de takes récents, plus il devient <strong>blanchâtre et translucide</strong>, comme la chaleur de Snap mais en blanc au lieu de bleu-jaune-rouge.</span></li>
+    <li><b>2</b><span><strong>Un point blanc</strong> seulement là où il y a vraiment beaucoup d'activité (les seuils sont plus bas).</span></li>
+    <li><b>3</b><span><strong>Tu touches n'importe où</strong>, même sans point : une <strong>vague de recherche animée</strong> part de ton doigt.</span></li>
+    <li><b>4</b><span>S'il n'y a rien : <strong>« Aucun take dispo ici »</strong>, et la planète reste là.</span></li>
+    <li><b>5</b><span>S'il y a des takes : une <strong>page de la zone</strong>, du plus voté au moins voté, qu'on <strong>ferme</strong> (✕ ou glisser vers le bas) pour retrouver la planète au même endroit. Plus de bouton « Voir les takes ».</span></li>
+  </ul>
+
+  <h2>Ce que fait vraiment Snap</h2>
+  <ul class="list">
+    <li><b>·</b><span>Une carte de chaleur des Snaps publics des <strong>dernières ~24 h</strong>, du <strong>bleu ciel au jaune puis au rouge</strong> selon le volume ; on touche une zone chaude pour voir ses Snaps, ou on appuie longuement sur un endroit quelconque.</span></li>
+    <li><b>·</b><span>La chaleur et les « stories » sont <strong>deux calques séparés</strong> : une zone chaude n'est pas forcément un point.</span></li>
+    <li><b>·</b><span>Snap ne publie <strong>aucun seuil chiffré</strong>. Ordre de grandeur mesuré (Riyad, 23 jours) : ~6 à 10 Snaps publics par km² et par jour, ~90 au coin le plus chaud. Take a beaucoup moins de monde : les seuils ci-dessous sont donc <strong>à nous</strong>, et réglables côté serveur sans mise à jour de l'app.</span></li>
+  </ul>
+  <p class="src">Sources : <a href="https://wordpress.cs.vt.edu/cs6724f17/2017/09/25/tech-demo-snap-map/">Virginia Tech (2017)</a>, <a href="https://techcrunch.com/2017/06/21/snap-map/">TechCrunch</a>, <a href="https://www.imore.com/how-use-snapchat-see-heat-maps-where-protests-are-happening">iMore</a>, <a href="https://help.snapchat.com/hc/en-gb/articles/7012293543572-How-to-Toggle-Between-Different-Map-Layers-on-Snap-Map">aide Snapchat</a>, <a href="https://github.com/AlecAnthonyGarcia/snap-map-private-api/blob/master/README.md">API rétro-ingéniérée</a>, <a href="https://arxiv.org/html/2608.05841v1">SnapScope (arXiv)</a>. Le blanc au plus chaud n'est pas documenté chez Snap : c'est ta demande.</p>
+
+  <h2>Les seuils proposés</h2>
+  <table>
+    <tr><th>Zoom</th><th>Case</th><th>Teinte dès</th><th>Point blanc</th></tr>
+    <tr><td>Rue</td><td>250 m</td><td>1 take</td><td><b>6 takes</b>, 3 personnes <span class="guess">estimé</span></td></tr>
+    <tr><td>Quartier</td><td>1 km</td><td>1 take</td><td><b>10 takes</b>, 5 personnes <span class="guess">estimé</span></td></tr>
+    <tr><td>Ville</td><td>2–8 km</td><td>2 takes</td><td><b>25 takes</b>, 10 personnes <span class="guess">estimé</span></td></tr>
+    <tr><td>Pays</td><td>16–64 km</td><td>3 takes</td><td><b>60 takes</b>, 20 personnes <span class="guess">estimé</span></td></tr>
+    <tr><td>Planète</td><td>128 km +</td><td>5 takes</td><td><b>150 takes</b>, 40 personnes <span class="guess">estimé</span></td></tr>
+  </table>
+  <p class="src">Comptés sur 7 jours, un take de moins de 24 h pèse plein, puis la moitié par jour. 3 takes au plus par personne et par case. Jamais plus fin que la case de 250 m que l'app publie déjà, et rien sous 3 takes : un point blanc ne peut pas désigner le domicile d'une personne.</p>
+
+  <div class="phone" id="phone">
+    <div id="map"></div>
+    <div class="scrim"></div>
+    <div class="sbar"><b>9:41</b><span>●●● ◔</span></div>
+    <div class="topbar"><span class="side"></span><span class="labels"><span class="lab off">Takes</span><span class="lab on">Autour<svg width="12" height="12" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></span></span><span class="acts"><svg width="23" height="23" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M6 16.5v-5.3a6 6 0 0 1 12 0v5.3l1.6 2H4.4zM10 20.2a2 2 0 0 0 4 0"/></svg></span></div>
+    <div class="hint" id="hint">Touche n'importe où sur la carte</div>
+    <div class="wave" id="wave"><i></i><i></i><i></i><b></b></div>
+    <div class="searching" id="searching">Recherche de takes…</div>
+    <div class="empty" id="empty"><h4>Aucun take dispo ici</h4><p>Personne n'a posté dans ce coin ces 7 derniers jours.</p><div class="acts"><span class="a" id="widen">Élargir</span><span class="b">Publier ici</span></div></div>
+    <div class="tabbar"><span class="cur"></span>
+      <span class="on"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11.3 3.3a1 1 0 0 1 1.4 0l8 7.6a1 1 0 0 1 .3.7V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-8.4a1 1 0 0 1 .3-.7z"/></svg></span>
+      <span><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></g></svg></span>
+      <span><svg width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7l-1.1 4.3 4.3-1.1A8.5 8.5 0 1 0 12 3.5z"/></svg></span>
+      <span><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8.5" r="4.2"/><path d="M3.8 20.5a9.5 9.5 0 0 1 16.4 0"/></g></svg></span>
+    </div>
+    <div class="backdrop" id="backdrop"></div>
+    <div class="sheet" id="sheet">
+      <i class="grab"></i>
+      <div class="shead"><div><h4 id="zt">Montmartre</h4><p id="zc">18 takes · du plus voté au moins voté</p></div><span class="close" id="close" role="button" aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg></span></div>
+      <div class="rows" id="rows"></div>
+    </div>
+  </div>
+  <div class="states" id="states">
+    <button data-s="world" class="on">1 · Planète</button>
+    <button data-s="paris">2 · Paris</button>
+    <button data-s="seoul">3 · Séoul</button>
+    <button data-s="tapEmpty">4 · Tap dans le vide</button>
+    <button data-s="tapHot">5 · Tap sur Montmartre</button>
+  </div>
+  <p class="cap" id="cap"><b>Planète.</b> Les régions actives s'éclairent en blanc translucide ; seuls les coins vraiment chauds ont un point blanc.</p>
+
+  <footer>
+    <p>Carte : MapLibre 5.6.0 (la version de l'app), tuiles OpenFreeMap / OpenMapTiles © contributeurs OpenStreetMap, repeintes dans la palette de la planète Take (océan #0E0E0F, terres #2F2F30). Takes, votes et personnes inventés ; photos Unsplash. Rien n'est branché sur l'API : c'est une maquette pour valider l'idée avant de coder.</p>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+<script>
+(function(){
+  // Activité inventée : des foyers de takes, chacun avec un poids et un étalement en km.
+  var SPOTS = [
+    {id:'montmartre', name:'Montmartre', lat:48.8867, lng:2.3431, n:34, km:.45, hot:true},
+    {id:'marais', name:'Le Marais', lat:48.8590, lng:2.3620, n:16, km:.5},
+    {id:'bastille', name:'Bastille', lat:48.8532, lng:2.3691, n:9, km:.4},
+    {id:'latin', name:'Quartier latin', lat:48.8494, lng:2.3470, n:6, km:.5},
+    {id:'republique', name:'République', lat:48.8674, lng:2.3636, n:4, km:.3},
+    {id:'defense', name:'La Défense', lat:48.8918, lng:2.2380, n:3, km:.4},
+    {id:'hongdae', name:'Hongdae', lat:37.5563, lng:126.9220, n:40, km:.5, hot:true},
+    {id:'gangnam', name:'Gangnam', lat:37.4979, lng:127.0276, n:30, km:.6, hot:true},
+    {id:'itaewon', name:'Itaewon', lat:37.5345, lng:126.9946, n:10, km:.35},
+    {id:'london', name:'Londres', lat:51.515, lng:-0.13, n:60, km:5, hot:true, world:true},
+    {id:'nyc', name:'New York', lat:40.73, lng:-73.99, n:55, km:6, hot:true, world:true},
+    {id:'tokyo', name:'Tokyo', lat:35.68, lng:139.76, n:30, km:8, world:true},
+    {id:'lagos', name:'Lagos', lat:6.52, lng:3.38, n:22, km:7, world:true},
+    {id:'saopaulo', name:'São Paulo', lat:-23.55, lng:-46.63, n:20, km:9, world:true},
+    {id:'montreal', name:'Montréal', lat:45.50, lng:-73.57, n:10, km:4, world:true},
+    {id:'dakar', name:'Dakar', lat:14.69, lng:-17.44, n:8, km:4, world:true},
+    {id:'casa', name:'Casablanca', lat:33.57, lng:-7.59, n:12, km:5, world:true},
+    {id:'madrid', name:'Madrid', lat:40.42, lng:-3.70, n:14, km:5, world:true},
+    {id:'lyon', name:'Lyon', lat:45.76, lng:4.84, n:9, km:3, world:true},
+    {id:'marseille', name:'Marseille', lat:43.30, lng:5.37, n:11, km:4, world:true}
+  ];
+  // Les foyers de Paris et de Séoul comptent aussi au zoom planète.
+  var PARIS = {name:'Paris', lat:48.8566, lng:2.3522, hot:true};
+  var SEOUL = {name:'Séoul', lat:37.5326, lng:126.99, hot:true};
+
+  // Une graine fixe : la même carte à chaque ouverture.
+  var seed = 7; function rnd(){ seed = (seed*16807) % 2147483647; return (seed-1)/2147483646 }
+  function gauss(){ var u=0,v=0; while(!u)u=rnd(); while(!v)v=rnd(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v) }
+  var pts = [];
+  SPOTS.forEach(function(s){
+    for (var i=0;i<s.n;i++){
+      var dy = gauss()*s.km/111, dx = gauss()*s.km/(111*Math.cos(s.lat*Math.PI/180));
+      pts.push({type:'Feature', properties:{spot:s.id, w: .5+rnd()*.5}, geometry:{type:'Point', coordinates:[s.lng+dx, s.lat+dy]}});
+    }
+  });
+  var heat = {type:'FeatureCollection', features:pts};
+  var dotsWorld = {type:'FeatureCollection', features:[PARIS,SEOUL].concat(SPOTS.filter(function(s){return s.world&&s.hot})).map(function(s){return {type:'Feature',properties:{name:s.name},geometry:{type:'Point',coordinates:[s.lng,s.lat]}}})};
+  var dotsCity = {type:'FeatureCollection', features:SPOTS.filter(function(s){return s.hot&&!s.world}).map(function(s){return {type:'Feature',properties:{id:s.id,name:s.name},geometry:{type:'Point',coordinates:[s.lng,s.lat]}}})};
+
+  var OCEAN='#0E0E0F', LAND='#2F2F30', URBAN='#333335', ROAD1='#4A4A4E', ROAD2='#5A5A5E', ROAD3='#6A6A6E', LABEL='#F5F5F5', DIM='#666973';
+  var style = {
+    version:8,
+    glyphs:'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
+    sources:{ omt:{type:'vector', url:'https://tiles.openfreemap.org/planet'}, heat:{type:'geojson', data:heat}, dotsW:{type:'geojson', data:dotsWorld}, dotsC:{type:'geojson', data:dotsCity}, me:{type:'geojson', data:{type:'Feature',properties:{},geometry:{type:'Point',coordinates:[2.3660,48.8712]}}} },
+    projection:{type:'globe'},
+    sky:{'sky-color':'#0A0A0A','horizon-color':'#1A1B1F','fog-color':'#0A0A0A','atmosphere-blend':['interpolate',['linear'],['zoom'],0,.6,6,.2,9,0]},
+    layers:[
+      {id:'bg', type:'background', paint:{'background-color':LAND}},
+      {id:'water', type:'fill', source:'omt', 'source-layer':'water', paint:{'fill-color':OCEAN}},
+      {id:'landuse', type:'fill', source:'omt', 'source-layer':'landuse', minzoom:9, filter:['in',['get','class'],['literal',['residential','commercial','industrial','retail']]], paint:{'fill-color':URBAN}},
+      {id:'bldg', type:'fill', source:'omt', 'source-layer':'building', minzoom:14, paint:{'fill-color':'#3A3A3C'}},
+      {id:'road-minor', type:'line', source:'omt', 'source-layer':'transportation', minzoom:12, filter:['in',['get','class'],['literal',['minor','service','tertiary']]], paint:{'line-color':ROAD1,'line-width':['interpolate',['linear'],['zoom'],12,.4,16,2.2]}},
+      {id:'road-mid', type:'line', source:'omt', 'source-layer':'transportation', minzoom:9, filter:['in',['get','class'],['literal',['secondary','primary','trunk']]], paint:{'line-color':ROAD2,'line-width':['interpolate',['linear'],['zoom'],9,.5,16,3.2]}},
+      {id:'road-major', type:'line', source:'omt', 'source-layer':'transportation', minzoom:6, filter:['==',['get','class'],'motorway'], paint:{'line-color':ROAD3,'line-width':['interpolate',['linear'],['zoom'],6,.4,16,4]}},
+      {id:'border', type:'line', source:'omt', 'source-layer':'boundary', filter:['==',['get','admin_level'],2], paint:{'line-color':'#61636B','line-width':.6,'line-opacity':.7}},
+      // La chaleur : blanche, translucide, jamais opaque.
+      {id:'heat', type:'heatmap', source:'heat', paint:{
+        'heatmap-weight':['get','w'],
+        'heatmap-intensity':['interpolate',['linear'],['zoom'],0,1.1,6,1.2,11,1.0,15,1.3],
+        'heatmap-radius':['interpolate',['linear'],['zoom'],0,10,3,18,6,24,10,30,13,46,16,80],
+        'heatmap-color':['interpolate',['linear'],['heatmap-density'],0,'rgba(255,255,255,0)',.12,'rgba(255,255,255,0.06)',.35,'rgba(255,255,255,0.15)',.6,'rgba(255,255,255,0.24)',.85,'rgba(255,255,255,0.33)',1,'rgba(255,255,255,0.42)'],
+        'heatmap-opacity':1}},
+      {id:'place', type:'symbol', source:'omt', 'source-layer':'place', filter:['in',['get','class'],['literal',['city','town','suburb','neighbourhood','quarter']]], minzoom:3,
+        layout:{'text-field':['coalesce',['get','name:fr'],['get','name']],'text-font':['Noto Sans Regular'],'text-size':['interpolate',['linear'],['zoom'],3,10,10,12,14,13],'text-max-width':8},
+        paint:{'text-color':DIM,'text-halo-color':OCEAN,'text-halo-width':1.2}},
+      // Le point blanc : seulement là où c'est vraiment chaud.
+      {id:'dotW-glow', type:'circle', source:'dotsW', maxzoom:8.5, paint:{'circle-color':'#FFFFFF','circle-radius':12,'circle-opacity':.45,'circle-blur':1}},
+      {id:'dotW', type:'circle', source:'dotsW', maxzoom:8.5, paint:{'circle-color':'#FFFFFF','circle-radius':4}},
+      {id:'dotC-glow', type:'circle', source:'dotsC', minzoom:10, paint:{'circle-color':'#FFFFFF','circle-radius':12,'circle-opacity':.45,'circle-blur':1}},
+      {id:'dotC', type:'circle', source:'dotsC', minzoom:10, paint:{'circle-color':'#FFFFFF','circle-radius':4}},
+      {id:'me-halo', type:'circle', source:'me', minzoom:9, paint:{'circle-color':'#D81E31','circle-radius':20,'circle-opacity':.18}},
+      {id:'me', type:'circle', source:'me', minzoom:9, paint:{'circle-color':'#D81E31','circle-radius':6,'circle-stroke-color':'#FFFFFF','circle-stroke-width':2}}
+    ]
+  };
+
+  var map = new maplibregl.Map({container:'map', style:style, center:[10,24], zoom:1.25, minZoom:.8, maxZoom:17, attributionControl:{compact:true}, pitchWithRotate:false, dragRotate:false});
+  map.touchZoomRotate.disableRotation();
+  window.__map = map;
+
+  // Le point blanc respire, comme les takes aujourd'hui.
+  var t0 = performance.now();
+  function beat(){
+    var k = (Math.sin((performance.now()-t0)/1900*2*Math.PI)+1)/2;
+    ['dotW-glow','dotC-glow'].forEach(function(id){ if(map.getLayer(id)) map.setPaintProperty(id,'circle-radius',12+7*k) });
+    setTimeout(function(){requestAnimationFrame(beat)}, 40);
+  }
+  map.on('load', function(){ beat(); window.__ready = true });
+
+  var TAKES = {
+    montmartre:[
+      ['maya','Maya','35 min','Le nouveau café de la rue des Abbesses, ça vaut le détour ?','rue',412],
+      ['hugo','Hugo R.','2 h','Sacré-Cœur à 7 h du mat ou à minuit ?','toits',356],
+      ['karim','Karim','1 h','Tu vivrais sans voiture à Paris ?','velo',298],
+      ['ines','Inès','3 h','Il pleut : tu annules la terrasse ?','pluie',187],
+      ['chloe','Chloé','5 h','Le brunch à 28 €, ça vaut le coup ?','brunch',121],
+      ['lucas','Lucas P.','hier','Concert debout ou assis ?','concert',64]
+    ],
+    hongdae:[
+      ['mei','Mei','20 min','Hongdae ou Gangnam pour sortir samedi ?','concert',512],
+      ['sami','Sami K.','1 h','Le meilleur bingsu du quartier, c\'est où ?','brunch',233],
+      ['awa','Awa D.','4 h','Karaoké jusqu\'à 4 h, raisonnable ?','concert',140]
+    ],
+    gangnam:[
+      ['yanis','Yanis','2 h','Le métro ligne 2 à 8 h, supportable ?','rame',344],
+      ['nora','Nora','6 h','Café à 7 000 ₩ : trop cher ?','terrasse',98]
+    ]
+  };
+  var AV = {};
+  function openZone(spotId, label){
+    var list = (TAKES[spotId] || TAKES.montmartre).slice().sort(function(a,b){return b[5]-a[5]});
+    document.getElementById('zt').textContent = label;
+    document.getElementById('zc').textContent = list.length + ' takes · du plus voté au moins voté';
+    document.getElementById('rows').innerHTML = list.map(function(r,i){
+      return '<div class="zr"><span class="rk'+(i<3?' top':'')+'">'+(i+1)+'</span><div class="bd"><p class="who"><img src="img/'+r[0]+'.jpg" alt=""><b>'+r[1]+'</b>· '+r[2]+'</p><p class="q">'+r[3]+'</p><p class="m">'+r[5].toLocaleString('fr-FR')+' votes</p></div><img class="th" src="img/'+r[4]+'.jpg" alt=""></div>';
+    }).join('');
+    document.getElementById('phone').classList.add('open');
+  }
+  function closeZone(){ document.getElementById('phone').classList.remove('open') }
+  document.getElementById('close').onclick = closeZone;
+  document.getElementById('backdrop').onclick = closeZone;
+
+  // La vague : elle part du doigt, cherche, puis ouvre la zone ou dit qu'il n'y a rien.
+  var waveEl = document.getElementById('wave'), searching = document.getElementById('searching'), empty = document.getElementById('empty'), hint = document.getElementById('hint');
+  var pending = null;
+  function probe(point, lngLat){
+    clearTimeout(pending); empty.style.display='none'; closeZone(); hint.style.opacity=0;
+    waveEl.style.left = point.x+'px'; waveEl.style.top = point.y+'px';
+    waveEl.style.display='block'; searching.style.display='block';
+    var mPerPx = 40075016 * Math.cos(lngLat.lat*Math.PI/180) / (512*Math.pow(2, map.getZoom()));
+    var radius = Math.min(50000, Math.max(250, 60*mPerPx));
+    var best = null, hits = 0;
+    pts.forEach(function(f){
+      var c = f.geometry.coordinates, dLat=(c[1]-lngLat.lat)*111320, dLng=(c[0]-lngLat.lng)*111320*Math.cos(lngLat.lat*Math.PI/180);
+      var d = Math.sqrt(dLat*dLat+dLng*dLng);
+      if (d <= radius){ hits++; if(!best||d<best.d) best={d:d, spot:f.properties.spot} }
+    });
+    pending = setTimeout(function(){
+      waveEl.style.display='none'; searching.style.display='none';
+      if (hits === 0) { empty.style.display='block' }
+      else { var s = SPOTS.filter(function(x){return x.id===best.spot})[0]; openZone(TAKES[best.spot]?best.spot:'montmartre', s ? s.name : 'Ce coin') }
+    }, 1500);
+  }
+  map.on('click', function(e){ probe(e.point, e.lngLat) });
+  document.getElementById('widen').onclick = function(){ empty.style.display='none'; map.easeTo({zoom: map.getZoom()-2, duration:700}) };
+
+  // Les états, pour montrer chaque moment sans chercher.
+  var CAPS = {
+    world:'<b>Planète.</b> Les régions actives s\'éclairent en blanc translucide ; seuls les coins vraiment chauds ont un point blanc.',
+    paris:'<b>Paris.</b> Montmartre est très actif (point blanc) ; le Marais, Bastille et le Quartier latin sont teintés selon leur volume ; le 15e, rien. Le point rouge, c\'est toi.',
+    seoul:'<b>Séoul.</b> Deux coins chauds, Hongdae et Gangnam ; Itaewon juste teinté.',
+    tapEmpty:'<b>Tap dans le vide.</b> La vague part du doigt, cherche, puis « Aucun take dispo ici » avec Élargir ou Publier ici. La planète ne bouge pas.',
+    tapHot:'<b>Tap sur Montmartre.</b> La vague, puis la page de la zone : du plus voté au moins voté. ✕ ou tap en dehors pour revenir sur la planète, au même endroit.'
+  };
+  function setState(s){
+    [].forEach.call(document.querySelectorAll('#states button'), function(b){ b.classList.toggle('on', b.getAttribute('data-s')===s) });
+    document.getElementById('cap').innerHTML = CAPS[s];
+    clearTimeout(pending); empty.style.display='none'; closeZone(); waveEl.style.display='none'; searching.style.display='none'; hint.style.opacity = s==='world' ? 1 : 0;
+    if (s==='world') map.jumpTo({center:[10,24], zoom:1.25});
+    if (s==='paris') map.jumpTo({center:[2.352,48.872], zoom:12.6});
+    if (s==='seoul') map.jumpTo({center:[126.975,37.528], zoom:10.7});
+    if (s==='tapEmpty'){ map.jumpTo({center:[2.2905,48.838], zoom:13.2}); setTimeout(function(){ var p=map.project([2.2905,48.838]); probe(p, map.unproject(p)) }, 900) }
+    if (s==='tapHot'){ map.jumpTo({center:[2.3431,48.8867], zoom:13.6}); setTimeout(function(){ var p=map.project([2.3431,48.8867]); probe(p, map.unproject(p)) }, 900) }
+  }
+  window.__setState = setState;
+  [].forEach.call(document.querySelectorAll('#states button'), function(b){ b.onclick = function(){ setState(b.getAttribute('data-s')) } });
+})();
+</script>
+</body>
+</html>
