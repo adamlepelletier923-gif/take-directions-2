@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<title>Take · Éditeur de quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#FFFFFF; --muted:#F0F2F5; --raised:#FFFFFF; --chip:#F0F2F5; --glass:rgba(240,242,245,.92);
+  --ink:#141414; --ink2:#6B6E73; --ink3:#84888E; --line:#E3E6EA; --hair:#1414141A; --fg:#0A0A0A;
+  --mine:#141414; --mineInk:#FFFFFF; --theirs:#F0F2F5; --accent:#141414; --accentInk:#FFFFFF;
+  --yes:#008B45; --yesSoft:#E3F4EA; --no:#C53637; --noSoft:#FBE6E6; --veil:#0000004D; --shadow:0 18px 48px rgba(0,0,0,.18);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --muted:#16181C; --raised:#1E2126; --chip:#26292E; --glass:rgba(38,41,46,.92);
+    --ink:#E7E9EA; --ink2:#83898F; --ink3:#6B6F75; --line:#2F3336; --hair:#FFFFFF1A; --fg:#E7E9EA;
+    --mine:#E7E9EA; --mineInk:#000000; --theirs:#1E2126; --accent:#E7E9EA; --accentInk:#000000;
+    --yes:#16A34A; --yesSoft:#0F2A1B; --no:#DC5551; --noSoft:#2F1616; --veil:#00000080; --shadow:0 18px 48px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --muted:#16181C; --raised:#1E2126; --chip:#26292E; --glass:rgba(38,41,46,.92);
+  --ink:#E7E9EA; --ink2:#83898F; --ink3:#6B6F75; --line:#2F3336; --hair:#FFFFFF1A; --fg:#E7E9EA;
+  --mine:#E7E9EA; --mineInk:#000000; --theirs:#1E2126; --accent:#E7E9EA; --accentInk:#000000;
+  --yes:#16A34A; --yesSoft:#0F2A1B; --no:#DC5551; --noSoft:#2F1616; --veil:#00000080; --shadow:0 18px 48px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:21px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.page{max-width:390px;margin:0 auto;padding-bottom:64px}
+.intro{padding:calc(env(safe-area-inset-top,0px) + 28px) 16px 8px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);line-height:16px}
+h1{font-size:32px;line-height:36px;font-weight:800;letter-spacing:-.9px;margin:10px 0 12px}
+.lede{font-size:16px;line-height:23px;color:var(--ink2)} .lede b{color:var(--ink);font-weight:600}
+.toggle{display:flex;gap:6px;margin-top:16px}
+.toggle button{font:inherit;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink2);cursor:pointer}
+.toggle button.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.common{margin:22px 16px 0;padding:14px 16px;border-radius:18px;background:var(--muted)}
+.common b.t{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+.common li{list-style:none;position:relative;padding:5px 0 5px 22px;font-size:14px;line-height:20px;color:var(--ink2)}
+.common li b{color:var(--ink);font-weight:600}
+.common li i{position:absolute;left:0;top:7px;font-size:15px;color:var(--ink)}
+h2{font-size:22px;line-height:27px;font-weight:800;letter-spacing:-.5px;margin:44px 16px 6px}
+h2 small{display:block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.why{margin:0 16px;font-size:14.5px;line-height:21px;color:var(--ink2)} .why b{color:var(--ink);font-weight:600}
+.notes{list-style:none;margin:12px 16px 0}
+.notes li{padding:8px 0;border-top:1px solid var(--hair);font-size:13.5px;line-height:19px;color:var(--ink2)}
+.notes li b{color:var(--ink);font-weight:600}
+.notes li:last-child{border-bottom:1px solid var(--hair)}
+.reco{margin:44px 16px 0;padding:16px;border-radius:18px;border:1.5px solid var(--fg)}
+.reco b.t{display:block;font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:6px}
+.reco p{font-size:14.5px;line-height:21px;color:var(--ink2)} .reco p b{color:var(--ink)}
+
+/* the three screens of a direction slide sideways */
+.rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-top:14px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.rail::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:start}
+.step{display:flex;align-items:center;gap:8px;padding:10px 16px 0;font-size:12.5px;font-weight:600;color:var(--ink2)}
+.step em{font-style:normal;display:grid;place-items:center;width:20px;height:20px;border-radius:10px;background:var(--fg);color:var(--bg);font-size:11px;font-weight:800}
+.step .go{margin-left:auto;font-weight:500;color:var(--ink3)}
+.flat .rail{display:block;overflow:visible}
+.phone{position:relative;height:760px;margin-top:10px;background:var(--bg);overflow:hidden}
+
+.sbar{position:absolute;left:0;right:0;top:0;height:48px;display:flex;align-items:center;justify-content:space-between;padding:4px 26px 0 34px;font-size:16px;font-weight:600;z-index:3}
+.sbar i{font-size:15px;margin-left:5px}
+.kh{position:absolute;top:48px;left:0;right:0;height:52px;display:flex;align-items:center;padding:0 12px;z-index:3}
+.kh .ib{width:36px;height:36px;border-radius:18px;display:grid;place-items:center;font-size:21px;background:var(--chip)}
+.kh .ttl{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:700}
+.kh .ttl .av{width:24px;height:24px;border-radius:12px;background:center/cover no-repeat}
+.body{position:absolute;top:104px;left:0;right:0;bottom:0;padding:0 16px}
+.qtitle{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:var(--ink2);margin:0 0 12px}
+.lbl{font-size:12px;font-weight:600;color:var(--ink2);margin:12px 2px 6px;display:flex;align-items:center;gap:6px}
+.lbl .opt{font-weight:500;color:var(--ink3)}
+.fld{display:flex;align-items:center;gap:10px;height:44px;padding:0 14px;border-radius:14px;background:var(--bg);border:1px solid var(--line);font-size:15px}
+.fld.hold{color:var(--ink3)}
+.fld.ok{border:1.5px solid var(--yes);background:var(--yesSoft)}
+.fld.ok i{margin-left:auto;color:var(--yes);font-size:19px}
+.fld .x{margin-left:auto;color:var(--ink3);font-size:16px}
+.fld+.fld{margin-top:8px}
+.caret{display:inline-block;width:2px;height:19px;background:var(--fg);vertical-align:-3px;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.qb{border-radius:20px;background:var(--muted);padding:14px}
+.qb+.qb,.qb+.dash{margin-top:10px}
+.qb .top{display:flex;align-items:flex-start;gap:10px}
+.num{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:12px;background:var(--fg);color:var(--bg);font-size:12px;font-weight:800}
+.num.ok{background:var(--yes);color:#fff}
+.qb .q{font-size:16px;font-weight:700;line-height:22px}
+.qb .sum{font-size:13px;color:var(--ink2);margin-top:2px}
+.qb .sum b{color:var(--yes);font-weight:600}
+.qb .ed{margin-left:auto;color:var(--ink3);font-size:18px}
+.qbig{font-size:18px;font-weight:700;line-height:24px;padding:4px 2px 2px}
+.dash{height:48px;border-radius:16px;border:1.5px dashed var(--line);display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600}
+.shortcuts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.sc{height:32px;padding:0 12px;border-radius:16px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.sc.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.foot{position:absolute;left:16px;right:16px;bottom:28px;z-index:4}
+.foot .sub{text-align:center;font-size:12.5px;color:var(--ink3);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px}
+.cta{height:52px;border-radius:26px;background:var(--accent);color:var(--accentInk);display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:700}
+.cta .av{width:26px;height:26px;border-radius:13px;background:center/cover no-repeat;border:2px solid var(--accentInk)}
+.ghost{height:44px;display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:600;color:var(--ink2)}
+.yn{display:flex;gap:8px;margin-top:8px}
+.yn div{flex:1;height:48px;border-radius:14px;display:grid;place-items:center;font-size:16px;font-weight:700;background:var(--bg);border:1px solid var(--line)}
+.yn div.ok{background:var(--yes);border-color:var(--yes);color:#fff}
+.tip{font-size:12.5px;line-height:17px;color:var(--ink3);margin:8px 2px 0}
+
+:root{--warn:#C77700;--warnSoft:#FFF4E0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--warn:#F5A524;--warnSoft:#2B2110}}
+:root[data-theme="dark"]{--warn:#F5A524;--warnSoft:#2B2110}
+.eh{position:absolute;top:48px;left:0;right:0;height:56px;display:flex;align-items:center;padding:0 16px;z-index:3}
+.eh .bk{width:40px;height:40px;border-radius:20px;background:var(--chip);display:grid;place-items:center;font-size:20px}
+.eh .t{flex:1;text-align:center;font-size:17px;font-weight:700;margin-right:40px}
+.eh .t small{display:block;font-size:11.5px;font-weight:600;color:var(--ink3);line-height:14px}
+.ed{position:absolute;top:108px;left:16px;right:16px;bottom:0}
+.tf{height:46px;border-radius:15px;background:var(--muted);border:1px solid var(--line);display:flex;align-items:center;padding:0 14px;font-size:16px;font-weight:500}
+.ql{font-size:13px;font-weight:600;color:var(--ink2);margin:14px 2px 8px}
+.qr{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:16px;border:1px solid var(--line);background:var(--bg)}
+.qr+.qr{margin-top:8px}
+.qr .n{font-size:11.5px;font-weight:600;color:var(--ink3)}
+.qr .q{font-size:15px;font-weight:600;line-height:19px}
+.qr .q.empty{color:var(--ink3)}
+.qr .is{font-size:12.5px;font-weight:600;color:var(--warn);margin-top:2px;display:flex;align-items:center;gap:4px}
+.qr .okk{font-size:12.5px;font-weight:600;color:var(--yes);margin-top:2px;display:flex;align-items:center;gap:4px}
+.qr .grow{flex:1;min-width:0}
+.qr .tools{display:flex;gap:4px;color:var(--ink3);font-size:17px}
+.qr.warn{border-color:var(--warn)}
+.qr .st{flex:none;width:26px;height:26px;border-radius:13px;display:grid;place-items:center;font-size:15px;color:#fff}
+.qr .st.ok{background:var(--yes)} .qr .st.w{background:var(--warn)}
+.add{margin-top:8px;height:46px;border-radius:16px;border:1.5px dashed var(--line);display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600}
+.ft{position:absolute;left:0;right:0;bottom:0;padding:12px 16px 30px;border-top:1px solid var(--hair);background:var(--bg);z-index:4}
+.ft .hint{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--ink2);margin-bottom:10px;text-align:center}
+.ft .hint i{color:var(--warn);font-size:15px}
+.btn{height:48px;border-radius:24px;background:var(--accent);color:var(--accentInk);display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:700}
+.btn.soft{background:var(--chip);color:var(--ink)}
+.btn.lock{background:var(--chip);color:var(--ink2)}
+.btn .av{width:24px;height:24px;border-radius:12px;background:center/cover no-repeat;border:2px solid var(--accentInk)}
+.lnk{height:40px;display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:600;color:var(--ink2)}
+.band{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;background:var(--warnSoft);margin-bottom:12px}
+.band.ok{background:var(--yesSoft)}
+.band i.lead{font-size:20px;color:var(--warn)} .band.ok i.lead{color:var(--yes)}
+.band b{display:block;font-size:14px;line-height:18px}
+.band span{font-size:12.5px;color:var(--ink2);line-height:16px}
+.band .gr{flex:1}
+.band .cv{color:var(--ink3);font-size:16px}
+.todo{margin:-4px 0 12px;padding:4px 12px;border-radius:14px;background:var(--muted)}
+.todo div{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:13.5px;font-weight:600}
+.todo div+div{border-top:1px solid var(--hair)}
+.todo div i{color:var(--warn);font-size:16px}
+.todo div span{margin-left:auto;color:var(--ink3);font-weight:500;font-size:12.5px}
+.segs{display:flex;gap:4px;margin:0 0 6px}
+.segs div{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.segs div.ok{background:var(--yes)} .segs div.w{background:var(--warn)}
+.cnt{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;color:var(--ink2);margin-bottom:12px}
+.cnt b{color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:11px;font-size:11.5px;font-weight:700;vertical-align:2px}
+.pill.draft{background:var(--warnSoft);color:var(--warn)}
+.pill.ready{background:var(--yesSoft);color:var(--yes)}
+.saved{font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:5px;margin:6px 2px 0}
+.ck{border-radius:16px;background:var(--muted);padding:4px 14px;margin-bottom:10px}
+.ck div{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:14px;font-weight:600}
+.ck div+div{border-top:1px solid var(--hair)}
+.ck div i{font-size:19px}
+.ck div i.ok{color:var(--yes)} .ck div i.no{color:var(--ink3)}
+.ck div.no{color:var(--ink2)}
+.ck div small{margin-left:auto;font-size:12px;font-weight:600;color:var(--warn)}
+.ck .ttl{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);padding:10px 0 4px}
+/* dialogs and sheets */
+.veil{position:absolute;inset:0;background:var(--veil);z-index:6}
+.dlg{position:absolute;left:28px;right:28px;top:250px;border-radius:24px;background:var(--raised);padding:20px 18px 14px;z-index:7;box-shadow:var(--shadow)}
+.dlg .ic{width:44px;height:44px;border-radius:22px;background:var(--warnSoft);color:var(--warn);display:grid;place-items:center;font-size:24px;margin-bottom:12px}
+.dlg b.h{display:block;font-size:18px;line-height:23px;font-weight:800;letter-spacing:-.3px}
+.dlg p{font-size:14px;line-height:20px;color:var(--ink2);margin:6px 0 14px}
+.dlg p b{color:var(--ink)}
+.dlg .miss{border-radius:14px;background:var(--muted);padding:2px 12px;margin:-4px 0 14px}
+.dlg .miss div{display:flex;gap:8px;align-items:center;padding:8px 0;font-size:13.5px;font-weight:600}
+.dlg .miss div+div{border-top:1px solid var(--hair)}
+.dlg .miss i{color:var(--warn);font-size:16px}
+.dlg .btn{height:46px;font-size:15px}
+.dlg .btn+.btn,.dlg .btn+.lnk{margin-top:8px}
+.dlg .lnk.red{color:var(--no)}
+.sheet{position:absolute;left:0;right:0;bottom:0;border-radius:28px 28px 0 0;background:var(--raised);padding:10px 18px 30px;z-index:7}
+.sheet .grab{width:38px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 14px}
+.sheet b.h{display:block;font-size:19px;font-weight:800;letter-spacing:-.3px}
+.sheet p{font-size:14px;line-height:20px;color:var(--ink2);margin:6px 0 14px}
+.sheet .opt{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:var(--muted)}
+.sheet .opt+.opt{margin-top:8px}
+.sheet .opt i{font-size:22px}
+.sheet .opt b{display:block;font-size:15px}
+.sheet .opt span{font-size:12.5px;color:var(--ink2)}
+.sheet .opt.red{color:var(--no)} .sheet .opt.red span{color:var(--ink2)}
+/* library */
+.lib{position:absolute;top:108px;left:16px;right:16px}
+.lc{border-radius:20px;border:1px solid var(--line);padding:14px;background:var(--bg)}
+.lc+.lc{margin-top:10px}
+.lc .tt{display:flex;align-items:flex-start;gap:10px}
+.lc .tt b{display:block;font-size:16px;line-height:21px}
+.lc .tt .grow{flex:1}
+.lc .meta{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:13px;color:var(--ink2);flex-wrap:wrap}
+.lc .why2{margin-top:10px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--warn)}
+.lc .row{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.lc .row span{font-size:12.5px;font-weight:600;color:var(--ink2)}
+.sb{height:34px;padding:0 16px;border-radius:17px;display:flex;align-items:center;font-size:14px;font-weight:700;background:var(--accent);color:var(--accentInk)}
+.sb.soft{background:var(--chip);color:var(--ink)}
+.toast2{position:absolute;left:16px;right:16px;bottom:34px;border-radius:18px;background:var(--fg);color:var(--bg);padding:12px 14px;display:flex;align-items:center;gap:10px;z-index:6}
+.toast2 i{font-size:20px;color:var(--warn)}
+.toast2 b{display:block;font-size:14px}
+.toast2 span{font-size:12.5px;opacity:.75}
+.toast2 .act{margin-left:auto;font-size:14px;font-weight:700;white-space:nowrap}
+.fab{position:absolute;right:18px;bottom:34px;height:50px;padding:0 20px;border-radius:25px;background:var(--accent);color:var(--accentInk);display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+</style>
+</head>
+<body>
+<main class="page" id="page">
+  <section class="intro">
+    <div class="eyebrow">KnowMe · éditeur · 23/09</div>
+    <h1>Savoir si ton quiz part ou pas</h1>
+    <p class="lede">« Mes quiz » ne bouge pas. Le souci est <b>dans l'éditeur</b> : on peut quitter un quiz pas fini, et rien ne dit qu'il reste en <b>brouillon qu'on ne peut pas envoyer</b>. Aujourd'hui : une petite ligne pour le premier problème, un bouton qui dit toujours « Enregistrer », et en sortant « Tes modifications seront perdues ». Voici <b>5 façons</b> de le rendre clair. Glisse chaque direction pour voir ses écrans.</p>
+    <div class="toggle" id="theme"><button data-t="light">Clair</button><button data-t="dark">Sombre</button></div>
+  </section>
+  <section class="common">
+    <b class="t">Dans les 5</b>
+    <ul>
+      <li><i class="ph ph-floppy-disk"></i>Quitter ne perd plus rien : <b>le quiz est gardé en brouillon</b>, et on te le dit.</li>
+      <li><i class="ph ph-list-checks"></i>On voit <b>tout ce qui manque</b>, pas seulement le premier problème, et un tap mène à la question.</li>
+      <li><i class="ph ph-paper-plane-tilt"></i>Le bouton dit ce qu'il fait : <b>« Enregistrer le brouillon »</b> tant que ce n'est pas fini, <b>« Envoyer »</b> quand c'est prêt.</li>
+    </ul>
+  </section>
+</main>
+<script>
+const MAYA = 'img/maya.jpg';
+const SBAR = '<div class="sbar"><span>16:30</span><span><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-high"></i></span></div>';
+const EH = (title, sub) => `<div class="eh"><div class="bk"><i class="ph ph-caret-left"></i></div><div class="t">${sub ? `<small>${sub}</small>` : ''}${title}</div></div>`;
+const LH = `<div class="eh"><div class="bk"><i class="ph ph-caret-left"></i></div><div class="t">Mes quiz</div></div>`;
+const TOOLS = '<div class="tools"><i class="ph ph-arrows-down-up"></i></div>';
+const Q = {
+  q1: (s) => row(1, 'Quel est mon plat préféré ?', null, s),
+  q2: (s) => row(2, 'Où je rêve de partir ?', 'Choisis ta bonne réponse', s),
+  q3: (s) => row(3, null, 'Écris la question', s),
+  q4: (s) => row(4, 'J’ai déjà sauté en parachute ?', null, s),
+};
+function row(n, text, issue, style) {
+  const st = style === 'status';
+  const lead = st ? `<div class="st ${issue ? 'w' : 'ok'}"><i class="ph${issue ? '-fill ph-pencil-simple' : '-bold ph-check'}"></i></div>` : '';
+  const sub = issue
+    ? `<div class="is"><i class="ph-fill ph-warning-circle"></i>${issue}</div>`
+    : st ? `<div class="okk">Prête</div>` : '';
+  return `<div class="qr ${issue && !st ? 'warn' : ''}">${lead}<div class="grow"><div class="n">Question ${n}</div><div class="q ${text ? '' : 'empty'}">${text || 'Question sans texte'}</div>${sub}</div>${TOOLS}</div>`;
+}
+const FOUR = (s) => Q.q1(s) + Q.q2(s) + Q.q3(s) + Q.q4(s);
+const LEAVE_MISS = `<div class="miss"><div><i class="ph-fill ph-warning-circle"></i>Question 2 : ta bonne réponse</div><div><i class="ph-fill ph-warning-circle"></i>Question 3 : la question</div></div>`;
+const LIB_READY = `<div class="lc"><div class="tt"><div class="grow"><b>Spécial vacances</b><div class="meta">5 questions <span class="pill ready"><i class="ph ph-check"></i>Prêt à envoyer</span></div></div><i class="ph ph-dots-three" style="font-size:20px"></i></div><div class="row"><span>2 envois · 1 terminé</span><div class="sb">Envoyer</div></div></div>`;
+
+const DIRECTIONS = [
+{
+  n: 1, name: 'Un bandeau d’état en haut',
+  why: 'Sous le titre, un bandeau dit <b>où en est le quiz</b> : orange « Brouillon · pas encore envoyable », vert « Prêt à envoyer ». Il se déplie sur <b>la liste de ce qui manque</b>. En sortant d’un quiz pas fini, la fenêtre dit clairement ce qui se passe.',
+  notes: ['Le plus proche d’aujourd’hui : on ajoute le bandeau, on change le texte du bouton et de la fenêtre de sortie.', 'Le bandeau se voit dès l’ouverture, même avant de toucher à quoi que ce soit.'],
+  screens: [
+    ['Pas fini : on le voit tout de suite', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="band"><i class="ph-fill ph-warning-circle lead"></i><div class="gr"><b>Brouillon · pas encore envoyable</b><span>2 choses à finir</span></div><i class="ph ph-caret-up cv"></i></div>
+      <div class="todo"><div><i class="ph-fill ph-warning-circle"></i>Question 2 : ta bonne réponse<span>Finir</span></div><div><i class="ph-fill ph-warning-circle"></i>Question 3 : écris la question<span>Finir</span></div></div>
+      <div class="tf">Tu me connais ?</div>
+      <div class="ql">Questions · 4</div>${FOUR()}
+    </div><div class="ft"><div class="btn">Enregistrer le brouillon</div></div>`],
+    ['Quitter sans avoir fini', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="band"><i class="ph-fill ph-warning-circle lead"></i><div class="gr"><b>Brouillon · pas encore envoyable</b><span>2 choses à finir</span></div><i class="ph ph-caret-down cv"></i></div>
+      <div class="tf">Tu me connais ?</div><div class="ql">Questions · 4</div>${FOUR()}
+    </div><div class="veil"></div><div class="dlg"><div class="ic"><i class="ph-fill ph-floppy-disk"></i></div><b class="h">Ton quiz n’est pas fini</b><p>On le garde en <b>brouillon</b> dans Mes quiz. Tu pourras l’envoyer quand ces 2 choses seront faites :</p>${LEAVE_MISS}<div class="btn">Finir maintenant</div><div class="lnk">Garder en brouillon et quitter</div></div>`],
+    ['Tout est bon', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="band ok"><i class="ph-fill ph-check-circle lead"></i><div class="gr"><b>Prêt à envoyer</b><span>4 questions, toutes complètes</span></div></div>
+      <div class="tf">Tu me connais ?</div><div class="ql">Questions · 4</div>${Q.q1()}${row(2,'Où je rêve de partir ?',null)}${row(3,'Mon film préféré ?',null)}${Q.q4()}
+    </div><div class="ft"><div class="btn">Enregistrer et envoyer</div></div>`]
+  ]
+},
+{
+  n: 2, name: 'Le bouton dit ce qui manque',
+  why: 'Pas de bandeau : c’est <b>le bouton du bas</b> qui porte l’état. Tant que ce n’est pas fini, il est gris avec un cadenas et dit <b>la prochaine chose à faire</b> (« Finis la question 2 »). Un tap t’y emmène. Quand tout est bon, il devient noir : « Envoyer à… ».',
+  notes: ['Un seul endroit à regarder, là où le pouce va déjà.', 'La sortie passe par une feuille en bas avec 3 choix clairs, dont « Supprimer » pour ne pas encombrer Mes quiz.'],
+  screens: [
+    ['Le bouton guide', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="tf">Tu me connais ?</div><div class="ql">Questions · 4</div>${FOUR()}
+    </div><div class="ft"><div class="btn lock"><i class="ph-fill ph-lock-simple"></i>Finis la question 2 pour envoyer</div><div class="lnk" style="height:34px;margin-top:4px">Enregistrer en brouillon</div></div>`],
+    ['Quitter : 3 choix clairs', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="tf">Tu me connais ?</div><div class="ql">Questions · 4</div>${FOUR()}
+    </div><div class="veil"></div><div class="sheet"><div class="grab"></div><b class="h">Ce quiz ne peut pas encore partir</b><p>Il manque ta bonne réponse à la question 2 et le texte de la question 3.</p>
+      <div class="opt"><i class="ph ph-pencil-simple"></i><div><b>Finir maintenant</b><span>Reprendre à la question 2</span></div></div>
+      <div class="opt"><i class="ph ph-floppy-disk"></i><div><b>Garder en brouillon</b><span>Dans Mes quiz, pas envoyable tant que ce n’est pas fini</span></div></div>
+      <div class="opt red"><i class="ph ph-trash"></i><div><b>Supprimer ce quiz</b><span>Il ne sera pas gardé</span></div></div></div>`],
+    ['Prêt : le bouton s’allume', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="tf">Tu me connais ?</div><div class="ql">Questions · 4</div>${Q.q1()}${row(2,'Où je rêve de partir ?',null)}${row(3,'Mon film préféré ?',null)}${Q.q4()}
+    </div><div class="ft"><div class="btn"><i class="ph-fill ph-paper-plane-tilt"></i>Envoyer</div><div class="lnk" style="height:34px;margin-top:4px">Enregistrer sans envoyer</div></div>`]
+  ]
+},
+{
+  n: 3, name: 'Chaque question a son statut',
+  why: 'Chaque question porte <b>un rond vert « Prête » ou orange « À finir »</b>, avec ce qui manque écrit dessous. En haut, une barre découpée par question et un compteur <b>« 2 / 4 prêtes »</b>. Dans Mes quiz, le brouillon dit <b>pourquoi</b> il ne part pas.',
+  notes: ['On voit d’un coup d’œil quelles questions sont finies, même sur un long quiz.', 'Le brouillon dans Mes quiz a un bouton « Finir » à la place de « Modifier », avec la raison en orange.'],
+  screens: [
+    ['Le statut sur chaque question', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="tf">Tu me connais ?</div>
+      <div class="ql" style="margin-bottom:6px">Questions</div>
+      <div class="segs"><div class="ok"></div><div class="w"></div><div class="w"></div><div class="ok"></div></div>
+      <div class="cnt"><span><b>2 / 4 prêtes</b></span><span>Brouillon : pas encore envoyable</span></div>
+      ${FOUR('status')}<div class="add"><i class="ph ph-plus"></i>Ajouter une question</div>
+    </div><div class="ft"><div class="btn">Enregistrer le brouillon</div></div>`],
+    ['Quitter sans avoir fini', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="tf">Tu me connais ?</div><div class="ql" style="margin-bottom:6px">Questions</div>
+      <div class="segs"><div class="ok"></div><div class="w"></div><div class="w"></div><div class="ok"></div></div>
+      <div class="cnt"><span><b>2 / 4 prêtes</b></span><span>Brouillon</span></div>${FOUR('status')}
+    </div><div class="veil"></div><div class="dlg"><div class="ic"><i class="ph-fill ph-hourglass-medium"></i></div><b class="h">2 questions à finir</b><p>Ton quiz reste dans Mes quiz en <b>brouillon</b>. Il ne pourra pas être envoyé tant que les 4 questions ne sont pas prêtes.</p><div class="btn">Continuer</div><div class="lnk">Quitter quand même</div></div>`],
+    ['Dans Mes quiz, la raison', `${LH}<div class="lib">
+      <div class="lc"><div class="tt"><div class="grow"><b>Tu me connais ?</b><div class="meta">4 questions <span class="pill draft">Brouillon</span></div></div><i class="ph ph-dots-three" style="font-size:20px"></i></div><div class="why2"><i class="ph-fill ph-warning-circle"></i>2 questions à finir avant de l’envoyer</div><div class="row"><span></span><div class="sb soft">Finir</div></div></div>
+      ${LIB_READY}
+    </div><div class="fab"><i class="ph ph-plus"></i>Créer un quiz</div>`]
+  ]
+},
+{
+  n: 4, name: 'Enregistré tout seul, prévenu après',
+  why: 'Plus de bouton « Enregistrer » ni de fenêtre en sortant : <b>tout s’enregistre tout seul</b>. À côté du titre, une étiquette <b>BROUILLON</b> ou <b>PRÊT</b>. En revenant dans Mes quiz après un quiz pas fini, <b>une bulle le rappelle</b> avec « Finir ».',
+  notes: ['Rien ne bloque la sortie : on part quand on veut, on ne perd rien.', 'Le rappel arrive au moment où tu regardes tes quiz, pas quand tu es pressé de quitter.', 'Demande un enregistrement automatique côté app (pas de changement serveur).'],
+  screens: [
+    ['L’étiquette dans l’en-tête', `${EH('Nouveau quiz <span class="pill draft">BROUILLON</span>')}<div class="ed">
+      <div class="tf">Tu me connais ?</div>
+      <div class="saved"><i class="ph ph-cloud-check"></i>Enregistré · il manque 2 choses pour pouvoir l’envoyer</div>
+      <div class="ql">Questions · 4</div>${FOUR()}
+    </div><div class="ft"><div class="btn lock"><i class="ph-fill ph-lock-simple"></i>Envoyer</div></div>`],
+    ['De retour dans Mes quiz', `${LH}<div class="lib">
+      <div class="lc"><div class="tt"><div class="grow"><b>Tu me connais ?</b><div class="meta">4 questions <span class="pill draft">Brouillon</span></div></div><i class="ph ph-dots-three" style="font-size:20px"></i></div><div class="row"><span>Modifié à l’instant</span><div class="sb soft">Finir</div></div></div>
+      ${LIB_READY}
+    </div><div class="toast2"><i class="ph-fill ph-floppy-disk"></i><div><b>Gardé en brouillon</b><span>Il manque 2 choses pour l’envoyer</span></div><span class="act">Finir</span></div>`],
+    ['Prêt : l’étiquette change', `${EH('Nouveau quiz <span class="pill ready">PRÊT</span>')}<div class="ed">
+      <div class="tf">Tu me connais ?</div>
+      <div class="saved"><i class="ph ph-cloud-check"></i>Enregistré</div>
+      <div class="ql">Questions · 4</div>${Q.q1()}${row(2,'Où je rêve de partir ?',null)}${row(3,'Mon film préféré ?',null)}${Q.q4()}
+    </div><div class="ft"><div class="btn"><i class="ph-fill ph-paper-plane-tilt"></i>Envoyer</div></div>`]
+  ]
+},
+{
+  n: 5, name: 'La liste « Avant d’envoyer »',
+  why: 'En bas de l’éditeur, une petite <b>liste à cocher</b> : un titre, au moins une question, <b>toutes les questions complètes</b>, au moins une question notée. Les cases se cochent pendant que tu écris. Le bouton d’envoi se débloque quand tout est coché.',
+  notes: ['Les règles d’aujourd’hui (titre obligatoire, une question notée…) deviennent visibles au lieu d’arriver en message d’erreur.', 'La sortie reprend la même liste : on sait exactement ce qui bloque.'],
+  screens: [
+    ['Les cases se cochent en écrivant', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="tf">Tu me connais ?</div><div class="ql">Questions · 4</div>${Q.q1()}${Q.q2()}${Q.q3()}
+    </div><div class="ft"><div class="ck"><div class="ttl">Avant d’envoyer</div><div><i class="ph-fill ph-check-circle ok"></i>Un titre</div><div><i class="ph-fill ph-check-circle ok"></i>Au moins une question notée</div><div class="no"><i class="ph ph-circle no"></i>Toutes les questions complètes<small>2 à finir</small></div></div><div class="btn lock"><i class="ph-fill ph-lock-simple"></i>Envoyer</div></div>`],
+    ['Quitter : la même liste', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="tf">Tu me connais ?</div><div class="ql">Questions · 4</div>${FOUR()}
+    </div><div class="veil"></div><div class="dlg"><div class="ic"><i class="ph-fill ph-list-checks"></i></div><b class="h">Pas encore envoyable</b><p>Ton quiz est gardé en <b>brouillon</b>. Pour pouvoir l’envoyer, il reste :</p>${LEAVE_MISS}<div class="btn">Finir maintenant</div><div class="lnk">Quitter, je finirai plus tard</div></div>`],
+    ['Tout est coché', `${EH('Nouveau quiz')}<div class="ed">
+      <div class="tf">Tu me connais ?</div><div class="ql">Questions · 4</div>${Q.q1()}${row(2,'Où je rêve de partir ?',null)}${row(3,'Mon film préféré ?',null)}
+    </div><div class="ft"><div class="ck"><div class="ttl">Avant d’envoyer</div><div><i class="ph-fill ph-check-circle ok"></i>Un titre</div><div><i class="ph-fill ph-check-circle ok"></i>Au moins une question notée</div><div><i class="ph-fill ph-check-circle ok"></i>Toutes les questions complètes</div></div><div class="btn"><i class="ph-fill ph-paper-plane-tilt"></i>Envoyer</div></div>`]
+  ]
+}];
+
+const page = document.getElementById('page');
+if (new URLSearchParams(location.search).has('flat')) document.body.classList.add('flat');
+for (const d of DIRECTIONS) {
+  const sec = document.createElement('section');
+  sec.innerHTML = `<h2><small>Direction ${d.n}</small>${d.name}</h2><p class="why">${d.why}</p>
+    <div class="rail">${d.screens.map((s, i) => `<div class="slide"><div class="step"><em>${i + 1}</em>${s[0]}<span class="go">${i < d.screens.length - 1 ? 'glisse →' : ''}</span></div><div class="phone">${SBAR + s[1]}</div></div>`).join('')}</div>
+    <ul class="notes">${d.notes.map((n) => `<li>${n}</li>`).join('')}</ul>`;
+  page.appendChild(sec);
+}
+const reco = document.createElement('section');
+reco.className = 'reco';
+reco.innerHTML = `<b class="t">Ma reco : la 1, avec les statuts de la 3</b><p>Le <b>bandeau</b> de la 1 dit dès l’ouverture si le quiz peut partir et déplie ce qui manque. La <b>fenêtre de sortie</b> explique qu’il reste en brouillon, pas envoyable tant que ce n’est pas fini. J’y ajoute le <b>rond vert / orange sur chaque question</b> de la 3 pour les longs quiz. C’est aussi la plus claire des 5 selon mon évaluation, et rien ne change côté serveur.</p>`;
+page.appendChild(reco);
+</script>
+<script>
+(function(){
+  var root=document.documentElement, key='take-knowme-editor-theme';
+  function apply(t){ if(t){root.setAttribute('data-theme',t)} else {root.removeAttribute('data-theme')}
+    var cur=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    [].forEach.call(document.querySelectorAll('#theme button'),function(b){b.classList.toggle('on',b.getAttribute('data-t')===cur)}) }
+  var saved=null; try{saved=localStorage.getItem(key)}catch(e){}
+  apply(saved);
+  [].forEach.call(document.querySelectorAll('#theme button'),function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-t');apply(t);try{localStorage.setItem(key,t)}catch(e){}})});
+})();
+</script>
+</body>
+</html>
