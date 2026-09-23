@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light dark">
-<title>Take · E Questions ask.fm</title>
+<title>Take · E comme ask.fm</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
@@ -603,7 +603,7 @@ footer.end code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-siz
 .qchips span{height:36px;padding:0 14px;border-radius:18px;background:var(--optRest);display:grid;place-items:center;font-size:14px;font-weight:600}
 .composer2{display:flex;align-items:center;gap:8px}
 .composer2 .in{flex:1;height:40px;border-radius:20px;padding:0 14px;display:flex;align-items:center;font-size:14px;background:var(--muted);color:var(--ink3)}
-.composer2 .aksend{opacity:1;width:34px;height:34px;border-radius:17px;background:var(--fg);color:var(--bg);display:grid;place-items:center;opacity:.35}
+.composer2 .send{width:34px;height:34px;border-radius:17px;background:var(--fg);color:var(--bg);display:grid;place-items:center;opacity:.35}
 .ibh{display:flex;align-items:baseline;justify-content:space-between;padding:14px 18px 6px}
 .ibh h4{font-size:24px;font-weight:800;letter-spacing:-.7px} .ibh span{font-size:13px;font-weight:600;color:var(--ink2)}
 .ib{display:flex;align-items:center;gap:12px;padding:10px 18px}
@@ -626,42 +626,63 @@ footer.end code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-siz
 .opt .lab span.pct{flex:none;margin-left:6px}
 
 
-.qa{border-bottom:1px solid var(--hair);padding:14px 0 16px}
-.qa .top{display:flex;align-items:center;gap:8px;padding:0 16px;font-size:13.5px;line-height:17px;color:var(--ink2)}
-.qa .top b{color:var(--ink);font-weight:600}
-.qa .top .sp{flex:1}
-.qa h2{padding:8px 16px 0;font-size:20px;line-height:25px;font-weight:800;letter-spacing:-.4px}
-.qa .cnt{padding:4px 16px 0;font-size:13px;color:var(--ink3)}
-.ans{display:flex;gap:10px;padding:14px 16px 0}
-.ans .body{flex:1;min-width:0}
-.ans .nm{display:flex;align-items:baseline;gap:6px;font-size:14px;line-height:18px}
-.ans .nm b{font-weight:700}
-.ans .nm span{color:var(--ink3);font-size:13px}
-.ans .t{margin-top:3px;font-size:15px;line-height:21px}
-.ans .t.clip{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.ans .qmore{color:var(--ink);font-size:14px;font-weight:700;margin-top:2px}
-.ans .act{display:flex;align-items:center;gap:16px;margin-top:8px;font-size:13px;font-weight:600;color:var(--ink2)}
-.ans .act .h{display:flex;align-items:center;gap:5px}
-.ans .act .h.on{color:var(--noFill)}
-.ans .ph{margin-top:8px;border-radius:12px;overflow:hidden;aspect-ratio:4/3}
-.ans .ph img{width:100%;height:100%;object-fit:cover;display:block}
-.qa .seeall{display:block;padding:12px 16px 0 58px;font-size:14px;font-weight:700}
-.box{margin:14px 16px 0;padding:12px 12px 10px;border-radius:18px;background:var(--muted)}
-.box .f{font-size:15px;line-height:21px;color:var(--ink3);min-height:21px}
-.box .f.on{color:var(--ink)}
-.box .bar{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;font-weight:600;color:var(--ink2)}
-.box .bar .sp{flex:1}
-.tog{width:30px;height:18px;border-radius:9px;background:var(--line);position:relative;flex:none}
-.tog::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--bg);box-shadow:0 1px 2px #0003}
-.tog.on{background:var(--fg)}.tog.on::after{left:14px}
-.aksend{opacity:1;width:44px;height:32px;border-radius:16px;background:var(--fg);color:var(--fgInv);display:grid;place-items:center}
-.aksend.off{opacity:.3}
-.ref{margin:18px 16px 0;padding:12px 14px;border-radius:14px;background:var(--muted);font-size:14px;line-height:20px;color:var(--ink2)}
+/* ── ask.fm, reproduit dans l'encre de Take ───────────────────────────── */
+.af-cover{height:112px;background:#222 center/cover;position:relative}
+.af-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.45))}
+.af-id{display:flex;gap:14px;align-items:flex-end;padding:0 16px;margin-top:-34px;position:relative}
+.af-id .pic{border:3px solid var(--bg)}
+.af-id .who{padding-bottom:4px;min-width:0}
+.af-id .h{font-size:12.5px;color:var(--ink2)}
+.af-id .nm{font-size:22px;line-height:26px;font-weight:800;letter-spacing:-.4px}
+.af-acts{display:flex;gap:8px;padding:12px 16px 0}
+.af-btn{height:36px;padding:0 16px;border-radius:18px;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700}
+.af-btn.primary{background:var(--fg);color:var(--fgInv)}
+.af-btn.ghost{box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink)}
+.af-stats{display:flex;gap:22px;padding:14px 16px 4px}
+.af-stat{display:flex;align-items:center;gap:8px}
+.af-stat .ic{width:34px;height:34px;border-radius:50%;background:var(--muted);display:grid;place-items:center;color:var(--ink)}
+.af-stat b{display:block;font-size:15px;line-height:18px}
+.af-stat u{text-decoration:none;font-size:11.5px;color:var(--ink2)}
+.af-ask{margin:14px 16px 0;padding:14px;border-radius:18px;background:var(--muted)}
+.af-ask .t{font-size:14px;font-weight:700;margin-bottom:10px}
+.af-ask .field{min-height:64px;border-radius:12px;background:var(--bg);padding:10px 12px;font-size:14.5px;line-height:20px;color:var(--ink3)}
+.af-ask .field.filled{color:var(--ink)}
+.af-ask .bar{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:12.5px;color:var(--ink2)}
+.af-ask .bar .sp{flex:1}
+.af-tog{width:30px;height:18px;border-radius:9px;background:var(--line);position:relative;flex:none}
+.af-tog::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.af-tog.on{background:var(--fg)}.af-tog.on::after{left:14px}
+.af-send{width:44px;height:32px;border-radius:16px;background:var(--fg);color:var(--fgInv);display:grid;place-items:center}
+.af-send.off{opacity:.35}
+.af-tabs{display:flex;margin:16px 16px 0;border-radius:12px;box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.af-tabs span{flex:1;text-align:center;padding:9px 0;font-size:13.5px;font-weight:600;color:var(--ink2)}
+.af-tabs span.on{background:var(--fg);color:var(--fgInv)}
+.af-sort{display:flex;justify-content:flex-end;gap:14px;padding:10px 16px 0;font-size:12.5px;color:var(--ink2)}
+.af-sort b{color:var(--ink)}
+.af-card{margin:12px 16px 0;padding:16px 16px 12px;border-radius:18px;box-shadow:inset 0 0 0 1px var(--line)}
+.af-q{font-size:19px;line-height:24px;font-weight:800;letter-spacing:-.3px}
+.af-asker{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--ink2);vertical-align:2px;margin-left:4px;white-space:nowrap}
+.af-date{font-size:12px;color:var(--ink3);margin-top:6px}
+.af-a{font-size:15px;line-height:21px;margin-top:10px}
+.af-a.clip{max-height:84px;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent)}
+.af-more{font-size:13.5px;font-weight:700;color:var(--ink);margin-top:8px}
+.af-photo{margin-top:10px;border-radius:14px;overflow:hidden;aspect-ratio:4/3}
+.af-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.af-foot{display:flex;align-items:center;gap:18px;border-top:1px solid var(--line);margin-top:12px;padding-top:10px;font-size:14.5px;font-weight:700}
+.af-foot .g{display:inline-flex;align-items:center;gap:6px}
+.af-foot .g.on{color:var(--noFill)}
+.af-foot .sp{flex:1}
+.af-liked{font-size:12.5px;color:var(--ink2);margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.af-liked b{color:var(--ink);font-weight:600}
+.af-inbox{margin:12px 16px 0;padding:14px 16px;border-radius:18px;box-shadow:inset 0 0 0 1px var(--line);display:flex;gap:12px;align-items:flex-start}
+.af-inbox .q{font-size:15.5px;line-height:21px;font-weight:700}
+.af-inbox .m{font-size:12px;color:var(--ink3);margin-top:4px}
+.af-inbox .acts{display:flex;gap:8px;margin-top:10px}
+.af-small{height:30px;padding:0 13px;border-radius:15px;font-size:13px;font-weight:700;display:inline-flex;align-items:center}
+.af-small.primary{background:var(--fg);color:var(--fgInv)}
+.af-small.ghost{box-shadow:inset 0 0 0 1.5px var(--line)}
+.ref{margin:0 16px;padding:12px 14px;border-radius:14px;background:var(--muted);font-size:13.5px;line-height:19px;color:var(--soft)}
 .ref b{color:var(--ink)}
-.cmp{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--hair)}
-.cmp div{padding:10px 16px;font-size:13.5px;line-height:19px;color:var(--ink2);border-bottom:1px solid var(--hair)}
-.cmp div:nth-child(odd){border-right:1px solid var(--hair)}
-.cmp b{color:var(--ink);font-weight:600}
 </style>
 </head>
 <body>
@@ -697,22 +718,37 @@ footer.end code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-siz
     <symbol id="i-user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8.5" r="4.2"/><path d="M3.8 20.5a9.5 9.5 0 0 1 16.4 0"/></g></symbol>
 </defs>
 </svg>
-<header class="hero"><p class="state" style="padding:0">Take · Questions</p><h1>E · Les Questions, façon ask.fm</h1>
-<p class="dcap" style="padding:0">Adam : « fais le style ask dans qst ». On garde Take (le fil Takes, l'en-tête D8, les visages, les filets) et on ne touche qu'à la carte Question, en lui donnant la mécanique d'ask.fm.</p></header>
-<div class="ref"><b>Ce qu'on prend à ask.fm :</b> la question en <b>gros titre gras</b> avec le petit visage de qui l'a posée (ou « Anonyme ») ; chaque réponse en <b>texte courant</b> sous le nom de la personne, avec ♡ et son chiffre ; « Afficher plus » quand c'est long ; la boîte de réponse avec la bascule <b>Anonymement</b>, 300 caractères et l'envoi.</div>
-<section class="screen"><article class="dir"><div class="dhead"><span class="n">E</span><h3>Dans le fil Takes</h3><span class="tag reco">Proposé</span></div><div class="shot scr">
-<div class="sbar"><b>9:41</b><span class="sico"><svg width="18" height="12" viewBox="0 0 18 12"><g fill="currentColor"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></g></svg><svg width="16" height="12" viewBox="0 0 16 12"><path fill="currentColor" d="M8 2.2c2.3 0 4.4.9 6 2.4l1.2-1.2A10.2 10.2 0 0 0 8 .5 10.2 10.2 0 0 0 .8 3.4L2 4.6a8.5 8.5 0 0 1 6-2.4zm0 3.4c1.4 0 2.6.5 3.6 1.4l1.2-1.2A6.8 6.8 0 0 0 8 3.9a6.8 6.8 0 0 0-4.8 1.9L4.4 7c1-.9 2.2-1.4 3.6-1.4zm0 3.4c.5 0 1 .2 1.3.5L8 10.8 6.7 9.5c.3-.3.8-.5 1.3-.5z"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2z" fill="currentColor" opacity=".45"/></svg></span></div><div class="dhbar c"><span class="side"></span><div class="iseg"><span class="on"><svg width="20" height="20"><use href="#i-flame"/></svg></span><span><svg width="20" height="20"><use href="#i-people"/></svg></span><span><svg width="20" height="20"><use href="#i-pin"/></svg></span></div><span class="acts"><span class="bell"><svg width="23" height="23"><use href="#i-bell"/></svg><i></i></span></span></div><div class="row" style="padding:12px 16px;border-bottom:1px solid var(--hair)"><div class="rhead"><span class="who"><img class="pic" src="img/karim.jpg" width="24" height="24" alt=""><span class="name">Karim</span></span><span class="age">· 1 h</span><span class="sp" style="flex:1"></span><span class="fol">Suivre</span><svg width="22" height="22" style="color:var(--ink2)"><use href="#i-dots"/></svg></div><p style="font-size:17px;line-height:23px;font-weight:600;margin-top:8px">Tu vivrais sans voiture à Paris ?</p><p style="font-size:13px;color:var(--ink3);margin-top:6px">… un take ordinaire du fil, inchangé</p></div><div class="qa"><div class="top"><img class="pic" src="img/jordan.jpg" width="24" height="24" alt=""><b>Jordan</b><span>demande · 2 h</span><span class="sp"></span><svg width="22" height="22" style="color:var(--ink2)"><use href="#i-dots"/></svg></div><h2>T'as vu la perf de Yamal hier soir ?</h2><p class="cnt">12 réponses de tes amis</p><div class="ans"><img class="pic" src="img/ines.jpg" width="36" height="36" alt=""><div class="body"><p class="nm"><b>Inès</b><span>1 h</span></p><p class="t">Deux passes décisives et le petit pont sur Hernández. À 19 ans. J'ai crié dans le métro.</p><div class="act"><span class="h on"><svg width="16" height="16"><use href="#i-heart"/></svg>48</span><span>Répondre</span></div></div></div><div class="ans"><img class="pic" src="img/karim.jpg" width="36" height="36" alt=""><div class="body"><p class="nm"><b>Karim</b><span>54 min</span></p><p class="t clip">Surcoté. Il a disparu toute la deuxième mi-temps, regardez le match en entier avant de vous emballer sur trois résumés TikTok et un but contre une défense qui dormait debout depuis la 60e.</p><p class="qmore">Afficher plus</p><div class="act"><span class="h"><svg width="16" height="16"><use href="#i-heart"/></svg>21</span><span>Répondre</span></div></div></div><a class="seeall">Voir les 10 autres réponses</a><div class="box"><p class="f">Ta réponse…</p><div class="bar"><span class="tog"></span><span style="">Anonymement</span><span class="sp"></span><span class="num">300</span><span class="aksend off"><svg width="16" height="16"><use href="#i-arrow-up"/></svg></span></div></div></div><div class="qa"><div class="top"><span class="ghostav" style="width:24px;height:24px"><svg width="14" height="14"><use href="#i-ghost"/></svg></span><b>Anonyme</b><span>demande · 5 h</span><span class="sp"></span><svg width="22" height="22" style="color:var(--ink2)"><use href="#i-dots"/></svg></div><h2>C'est qui ton crush secret ?</h2><p class="cnt">7 réponses de tes amis</p><div class="ans"><span class="ghostav" style="width:36px;height:36px"><svg width="20" height="20"><use href="#i-ghost"/></svg></span><div class="body"><p class="nm"><b>Anonyme</b><span>3 h</span></p><p class="t">Quelqu'un qui lit cette question en ce moment. Je dis rien de plus.</p><div class="act"><span class="h"><svg width="16" height="16"><use href="#i-heart"/></svg>63</span><span>Répondre</span></div></div></div><div class="ans"><img class="pic" src="img/mei.jpg" width="36" height="36" alt=""><div class="body"><p class="nm"><b>Mei</b><span>2 h</span></p><p class="t">La boulangère de la rue des Martyrs. Elle ne le sait pas.</p><div class="ph"><img src="img/rue.jpg" alt=""></div><div class="act"><span class="h"><svg width="16" height="16"><use href="#i-heart"/></svg>17</span><span>Répondre</span></div></div></div><a class="seeall">Voir les 5 autres réponses</a><div class="box"><p class="f">Ta réponse…</p><div class="bar"><span class="tog"></span><span style="">Anonymement</span><span class="sp"></span><span class="num">300</span><span class="aksend off"><svg width="16" height="16"><use href="#i-arrow-up"/></svg></span></div></div></div><div style="height:24px"></div></div>
-<p class="dcap"><b>Ce qui change</b> : plus de carte encadrée ni de bouton rond « + » ; la question est un titre, les deux réponses les plus aimées sont lues en entier, les autres derrière « Voir les N autres réponses ». <b>On cache</b> : les initiales à la place des visages, le champ gris minuscule. <b>Tapable</b> : ♡, Répondre, Afficher plus, le visage de qui demande, la boîte.</p></article>
-<article class="dir" style="margin-top:36px"><div class="dhead"><span class="n">E·a</span><h3>Tu réponds, en anonyme</h3></div><div class="shot scr"><div class="qa"><div class="top"><img class="pic" src="img/jordan.jpg" width="24" height="24" alt=""><b>Jordan</b><span>demande · 2 h</span><span class="sp"></span><svg width="22" height="22" style="color:var(--ink2)"><use href="#i-dots"/></svg></div><h2>T'as vu la perf de Yamal hier soir ?</h2><p class="cnt">12 réponses de tes amis</p><div class="ans"><img class="pic" src="img/ines.jpg" width="36" height="36" alt=""><div class="body"><p class="nm"><b>Inès</b><span>1 h</span></p><p class="t">Deux passes décisives et le petit pont sur Hernández. À 19 ans. J'ai crié dans le métro.</p><div class="act"><span class="h on"><svg width="16" height="16"><use href="#i-heart"/></svg>48</span><span>Répondre</span></div></div></div><div class="ans"><img class="pic" src="img/karim.jpg" width="36" height="36" alt=""><div class="body"><p class="nm"><b>Karim</b><span>54 min</span></p><p class="t clip">Surcoté. Il a disparu toute la deuxième mi-temps, regardez le match en entier avant de vous emballer sur trois résumés TikTok et un but contre une défense qui dormait debout depuis la 60e.</p><p class="qmore">Afficher plus</p><div class="act"><span class="h"><svg width="16" height="16"><use href="#i-heart"/></svg>21</span><span>Répondre</span></div></div></div><a class="seeall">Voir les 10 autres réponses</a><div class="box"><p class="f on">Il a 19 ans et il joue déjà comme un dix. Laissez-le tranquille.</p><div class="bar"><span class="tog on"></span><span style="color:var(--ink)">Anonymement</span><span class="sp"></span><span class="num">236</span><span class="aksend"><svg width="16" height="16"><use href="#i-arrow-up"/></svg></span></div></div></div></div>
-<p class="dcap">La boîte remplie, bascule Anonymement allumée : le compteur descend depuis 300, l'envoi s'allume. Ta réponse arrive en tête sous « Toi », visible des autres comme « Anonyme ».</p></article>
-<article class="dir" style="margin-top:36px"><div class="dhead"><span class="n">E·b</span><h3>Avant / après</h3></div>
-<div class="cmp"><div><b>Aujourd'hui</b></div><div><b>Façon ask.fm</b></div>
-<div>Carte encadrée, nom + « 2 h · 12 réponses » en tête</div><div>Pas de cadre ; « Jordan demande · 2 h », puis la question en titre</div>
-<div>Question en texte moyen</div><div>Question 20 pt, graisse 800</div>
-<div>Réponses d'une ligne, à initiales</div><div>Réponses lues en entier, visage 36, ♡ et Répondre</div>
-<div>Bouton rond « + » et petit champ gris</div><div>Boîte « Ta réponse… » + Anonymement + 300 + envoi</div></div></article>
+<header class="hero"><p class="state" style="padding:0">Take · Questions</p><h1>E · Comme ask.fm</h1>
+<p class="dcap" style="padding:0">Adam : « pour E je trouve pas que y'a ask.fm, genre va vraiment voir comment c'était et reproduis la même chose ». J'ai relu une page de profil ask.fm (capture de 2023 sur la Wayback Machine, le site ne répond plus) et j'en reprends la mécanique telle quelle, dans l'encre de Take.</p></header>
+<div class="ref"><b>Ce que fait ask.fm, relevé sur la page :</b> sous le nom, un gros bouton « Pose-moi n'importe quoi » ; une boîte « Pose ta question à @… » avec « Quoi, quand, pourquoi… », une photo, la bascule « Demander anonymement », 300 caractères et l'envoi ; des onglets Réponses / Questions et un tri Récentes / Les plus aimées ; puis une carte par réponse : <b>la question en titre gras</b>, le petit visage de qui l'a posée (rien si c'est anonyme), la date en gris, <b>la réponse en texte courant</b>, « Afficher plus » quand elle est longue, ♡ et 🔥 avec leurs chiffres, et « Aimé par … ».</div>
+<section class="screen"><article class="dir"><div class="dhead"><span class="n">E</span><h3>Le profil, onglet Réponses</h3><span class="tag reco">Proposé</span></div><div class="shot scr">
+<div class="sbar"><b>9:41</b><span class="sico"></span></div>
+<div class="af-cover" style="background-image:url(img/toits.jpg)"></div>
+<div class="af-id"><img class="pic" src="img/lea.jpg" width="76" height="76" alt=""><div class="who"><p class="h">@lea.m</p><p class="nm">Léa Martin</p></div></div>
+<div class="af-acts"><span class="af-btn primary"><svg width="16" height="16"><use href="#i-chatdots"/></svg>Pose-moi une question</span><span class="af-btn ghost">Suivre</span><span class="sp"></span></div>
+<div class="af-stats"><span class="af-stat"><span class="ic"><svg width="17" height="17"><use href="#i-chat"/></svg></span><span><b>214</b><u>réponses</u></span></span><span class="af-stat"><span class="ic"><svg width="17" height="17"><use href="#i-heart"/></svg></span><span><b>3,8 k</b><u>j'aime</u></span></span></div>
+<div class="af-ask"><p class="t">Pose ta question à @lea.m</p><div class="field">Quoi, quand, pourquoi… demande</div>
+<div class="bar"><span class="af-tog"></span>Anonymement<span class="sp"></span>300<span class="af-send off"><svg width="16" height="16"><use href="#i-arrow-up"/></svg></span></div></div>
+<div class="af-tabs"><span class="on">Réponses</span><span>Questions</span></div>
+<div class="af-sort">Trier : <b>Récentes</b><span>Les plus aimées</span></div>
+<div class="af-card"><p class="af-q">T'as déjà pleuré devant un film d'animation ?<span class="af-asker"><span class="ghostav" style="width:18px;height:18px"><svg width="11" height="11"><use href="#i-ghost"/></svg></span>Anonyme</span></p><p class="af-date">Il y a 2 h</p><p class="af-a">Là-haut, les dix premières minutes. Personne n'est prêt pour ça, et je l'ai revu trois fois quand même.</p><div class="af-foot"><span class="g on"><svg width="20" height="20"><use href="#i-heart"/></svg>563</span><span class="g"><svg width="20" height="20"><use href="#i-flame"/></svg>250</span><span class="sp"></span><svg width="22" height="22"><use href="#i-dots"/></svg></div><p class="af-liked">Aimé par <b>Inès</b>, <b>Karim</b>, <b>Mei</b> et 560 autres</p></div>
+<div class="af-card"><p class="af-q">C'est quoi ton spot préféré à Paris ?<span class="af-asker"><img class="pic" src="img/hugo.jpg" width="18" height="18" alt="">Hugo</span></p><p class="af-date">Hier</p><p class="af-a">Les toits du parking de Belleville au coucher du soleil. Je donne l'adresse à personne.</p><div class="af-photo"><img src="img/coucher.jpg" alt=""></div><div class="af-foot"><span class="g"><svg width="20" height="20"><use href="#i-heart"/></svg>212</span><span class="g"><svg width="20" height="20"><use href="#i-flame"/></svg>64</span><span class="sp"></span><svg width="22" height="22"><use href="#i-dots"/></svg></div><p class="af-liked">Aimé par <b>Hugo</b>, <b>Nora</b> et 210 autres</p></div>
+<div class="af-card"><p class="af-q">Si tu devais changer une chose dans ta vie demain ?<span class="af-asker"><span class="ghostav" style="width:18px;height:18px"><svg width="11" height="11"><use href="#i-ghost"/></svg></span>Anonyme</span></p><p class="af-date">Il y a 3 jours</p><p class="af-a clip">Dormir avant minuit. Ça paraît rien, mais ça fait deux ans que je me le promets tous les dimanches soir, et tous les dimanches soir je finis sur mon téléphone à regarder des gens qui rangent leur cuisine. Si quelqu'un a une méthode qui marche vraiment, je prends.</p><p class="af-more">Afficher plus</p><div class="af-foot"><span class="g"><svg width="20" height="20"><use href="#i-heart"/></svg>98</span><span class="g"><svg width="20" height="20"><use href="#i-flame"/></svg>12</span><span class="sp"></span><svg width="22" height="22"><use href="#i-dots"/></svg></div><p class="af-liked">Aimé par <b>Sami</b> et 97 autres</p></div>
+<div style="height:28px"></div>
+</div>
+<p class="dcap"><b>Ce qui change</b> : la question devient le titre, la réponse de la personne le corps, comme sur ask.fm. Une carte = une question et SA réponse. <b>On cache</b> : le bouton rond « + », les réponses à initiales, le champ gris sous chaque question. <b>Tapable</b> : ♡, 🔥, « Afficher plus », le visage de qui a posé la question.</p></article>
+<article class="dir"><div class="dhead"><span class="n">E·a</span><h3>Poser une question</h3></div><div class="shot pad" style="padding:14px 0 18px">
+<div class="af-ask"><p class="t">Pose ta question à @lea.m</p><div class="field filled">Tu remettrais les pieds dans ton ancien lycée ?</div>
+<div class="bar"><span class="af-tog on"></span><b style="color:var(--ink)">Anonymement</b><span class="sp"></span>252<span class="af-send"><svg width="16" height="16"><use href="#i-arrow-up"/></svg></span></div></div>
+</div>
+<p class="dcap">La boîte du profil, remplie, en anonyme : le compteur descend de 300, l'envoi s'allume.</p></article>
+<article class="dir"><div class="dhead"><span class="n">E·b</span><h3>Onglet Questions (à toi seul)</h3></div><div class="shot pad" style="padding:6px 0 18px">
+<div class="af-tabs"><span>Réponses</span><span class="on">Questions · 3</span></div>
+<div class="af-inbox"><span class="ghostav" style="width:34px;height:34px"><svg width="21" height="21"><use href="#i-ghost"/></svg></span><div style="flex:1;min-width:0"><p class="q">Tu remettrais les pieds dans ton ancien lycée ?</p><p class="m">Anonyme · il y a 4 min</p><div class="acts"><span class="af-small primary">Répondre</span><span class="af-small ghost">Supprimer</span></div></div></div>
+<div class="af-inbox"><img class="pic" src="img/karim.jpg" width="34" height="34" alt=""><div style="flex:1;min-width:0"><p class="q">Ton album de l'année, sans réfléchir ?</p><p class="m">Karim · il y a 1 h</p><div class="acts"><span class="af-small primary">Répondre</span><span class="af-small ghost">Supprimer</span></div></div></div>
+</div>
+<p class="dcap">Les questions reçues en attente, comme la boîte de réception d'ask.fm : Répondre ou Supprimer. Une fois répondue, la question part dans l'onglet Réponses.</p></article>
 </section>
-<p class="dcap" style="padding:28px 16px 0"><a href="askfm-profil.html" style="color:var(--ink2)">Version précédente (profil ask.fm)</a> · <a href="index.html" style="color:var(--ink2)">Toutes les directions</a></p>
 </div>
 </body>
 </html>
