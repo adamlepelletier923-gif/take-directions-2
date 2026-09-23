@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<title>Take · Les jeux dans la conv</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#FFFFFF; --muted:#F0F2F5; --raised:#FFFFFF; --chip:#F0F2F5; --glass:rgba(240,242,245,.92);
+  --ink:#141414; --ink2:#6B6E73; --ink3:#84888E; --line:#E3E6EA; --hair:#1414141A; --fg:#0A0A0A;
+  --mine:#141414; --mineInk:#FFFFFF; --theirs:#F0F2F5; --accent:#141414; --accentInk:#FFFFFF;
+  --yes:#008B45; --no:#C53637; --gold:#E0A100; --veil:#0000004D; --shadow:0 18px 48px rgba(0,0,0,.18);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --muted:#16181C; --raised:#1E2126; --chip:#26292E; --glass:rgba(38,41,46,.92);
+    --ink:#E7E9EA; --ink2:#83898F; --ink3:#6B6F75; --line:#2F3336; --hair:#FFFFFF1A; --fg:#E7E9EA;
+    --mine:#E7E9EA; --mineInk:#000000; --theirs:#1E2126; --accent:#E7E9EA; --accentInk:#000000;
+    --yes:#16A34A; --no:#DC5551; --veil:#00000080; --shadow:0 18px 48px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --muted:#16181C; --raised:#1E2126; --chip:#26292E; --glass:rgba(38,41,46,.92);
+  --ink:#E7E9EA; --ink2:#83898F; --ink3:#6B6F75; --line:#2F3336; --hair:#FFFFFF1A; --fg:#E7E9EA;
+  --mine:#E7E9EA; --mineInk:#000000; --theirs:#1E2126; --accent:#E7E9EA; --accentInk:#000000;
+  --yes:#16A34A; --no:#DC5551; --veil:#00000080; --shadow:0 18px 48px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:21px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.page{max-width:390px;margin:0 auto;padding-bottom:64px}
+.intro{padding:calc(env(safe-area-inset-top,0px) + 28px) 16px 8px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);line-height:16px}
+h1{font-size:32px;line-height:36px;font-weight:800;letter-spacing:-.9px;margin:10px 0 12px}
+.lede{font-size:16px;line-height:23px;color:var(--ink2)} .lede b{color:var(--ink);font-weight:600}
+.toggle{display:flex;gap:6px;margin-top:16px}
+.toggle button{font:inherit;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink2);cursor:pointer}
+.toggle button.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+h2{font-size:22px;line-height:27px;font-weight:800;letter-spacing:-.5px;margin:40px 16px 6px}
+h2 small{display:block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.why{margin:0 16px;font-size:14.5px;line-height:21px;color:var(--ink2)} .why b{color:var(--ink);font-weight:600}
+.notes{list-style:none;margin:10px 16px 0}
+.notes li{padding:8px 0;border-top:1px solid var(--hair);font-size:13.5px;line-height:19px;color:var(--ink2)}
+.notes li:last-child{border-bottom:1px solid var(--hair)}
+
+.phone{position:relative;height:780px;margin-top:16px;background:var(--bg);overflow:hidden;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.sbar{position:absolute;left:0;right:0;top:0;height:48px;display:flex;align-items:center;justify-content:space-between;padding:4px 26px 0 34px;font-size:16px;font-weight:600;z-index:3}
+.sbar i{font-size:15px;margin-left:5px}
+.head{position:absolute;top:48px;left:0;right:0;height:56px;display:flex;align-items:center;gap:10px;padding:0 14px;z-index:3;background:var(--bg)}
+.head .back{font-size:24px}
+.head .av{width:36px;height:36px;border-radius:50%;background:center/cover no-repeat}
+.head .nm{font-size:16px;font-weight:700;line-height:18px} .head .nm small{display:block;font-size:12px;font-weight:500;color:var(--ink2)}
+.head .sp{flex:1}
+.head .ib{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:22px}
+.head .ib.on{background:var(--chip)}
+.thread{position:absolute;top:104px;left:0;right:0;bottom:84px;padding:12px 16px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+.day{align-self:center;font-size:11.5px;font-weight:500;color:var(--ink2);background:var(--chip);border-radius:10px;padding:3px 10px;margin:6px 0}
+.b{max-width:74%;padding:9px 14px;border-radius:20px;font-size:15px;line-height:20px}
+.b.t{align-self:flex-start;background:var(--theirs)} .b.m{align-self:flex-end;background:var(--mine);color:var(--mineInk)}
+.bar{position:absolute;left:16px;right:16px;bottom:22px;height:52px;border-radius:27px;background:var(--glass);border:1px solid var(--hair);display:flex;align-items:center;gap:10px;padding:0 10px;z-index:4}
+.bar .plus{width:36px;height:36px;border-radius:50%;background:var(--bg);border:1px solid var(--hair);display:grid;place-items:center;font-size:19px}
+.bar .plus.on{background:var(--accent);color:var(--accentInk);border-color:var(--accent)}
+.bar .field{flex:1;color:var(--ink2);font-size:15px}
+.bar i.g{font-size:24px;width:30px;text-align:center}
+/* games */
+.tile{border-radius:18px;background:var(--raised);border:1px solid var(--hair);box-shadow:var(--shadow)}
+.gic{display:grid;place-items:center;border-radius:14px;color:#fff}
+.g1{background:linear-gradient(135deg,#FF5A36,#FF9F1C)} .g2{background:linear-gradient(135deg,#6C4DFF,#B06CFF)}
+.tray{position:absolute;left:16px;right:16px;bottom:86px;padding:14px;display:flex;gap:12px;z-index:4}
+.tray .it{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 8px;border-radius:16px;background:var(--chip)}
+.tray .gic{width:52px;height:52px;font-size:26px}
+.tray b{font-size:14px} .tray span{font-size:12px;color:var(--ink2)}
+.pop{position:absolute;top:100px;right:14px;width:230px;padding:6px;z-index:5}
+.pop .row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px}
+.pop .row+.row{border-top:.5px solid var(--hair)}
+.pop .gic{width:40px;height:40px;font-size:20px} .pop b{font-size:15px;display:block} .pop span{font-size:12px;color:var(--ink2)}
+.veil{position:absolute;inset:0;background:var(--veil);z-index:4}
+.chips{position:absolute;left:16px;right:16px;bottom:84px;display:flex;gap:8px;z-index:4}
+.chip{display:flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 6px;border-radius:18px;background:var(--raised);border:1px solid var(--line);font-size:14px;font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+.chip .gic{width:26px;height:26px;border-radius:13px;font-size:14px}
+.chip .x{margin-left:auto;font-size:14px;color:var(--ink3)}
+.dcard{align-self:center;width:86%;padding:14px;border-radius:20px;background:var(--raised);border:1px solid var(--line);margin:8px 0}
+.dcard .top{display:flex;align-items:center;gap:10px}
+.dcard .gic{width:40px;height:40px;font-size:20px}
+.dcard b{font-size:15px;display:block;line-height:19px} .dcard span{font-size:12.5px;color:var(--ink2)}
+.score{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 10px;font-size:26px;font-weight:800;letter-spacing:-.5px}
+.score em{font-style:normal;font-size:12px;font-weight:600;color:var(--ink2);letter-spacing:0}
+.btns{display:flex;gap:8px}
+.btns div{flex:1;height:38px;border-radius:19px;display:grid;place-items:center;font-size:14px;font-weight:700;background:var(--chip)}
+.btns div.p{background:var(--accent);color:var(--accentInk)}
+.seg{position:absolute;top:104px;left:16px;right:16px;height:36px;border-radius:18px;background:var(--chip);display:flex;padding:3px;z-index:3}
+.seg div{flex:1;border-radius:15px;display:grid;place-items:center;font-size:14px;font-weight:600;color:var(--ink2)}
+.seg div.on{background:var(--raised);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.games{position:absolute;top:152px;left:16px;right:16px;display:flex;flex-direction:column;gap:12px}
+.gbig{padding:16px;border-radius:22px;background:var(--raised);border:1px solid var(--line)}
+.gbig .top{display:flex;align-items:center;gap:12px}
+.gbig .gic{width:56px;height:56px;font-size:28px;border-radius:16px}
+.gbig b{font-size:17px;display:block} .gbig span{font-size:13px;color:var(--ink2)}
+.h2h{display:flex;justify-content:space-between;align-items:center;margin:14px 0;padding:10px 12px;border-radius:14px;background:var(--chip);font-size:13px;color:var(--ink2)}
+.h2h strong{font-size:20px;color:var(--ink);font-weight:800}
+.hist{font-size:12.5px;color:var(--ink2);margin-bottom:12px}
+.orb{position:absolute;right:18px;bottom:92px;width:60px;height:60px;border-radius:30px;display:grid;place-items:center;font-size:28px;color:#fff;z-index:5;box-shadow:0 10px 26px rgba(255,90,54,.45)}
+.orb .badge{position:absolute;top:-8px;right:-4px;padding:2px 8px;border-radius:10px;background:var(--accent);color:var(--accentInk);font-size:11px;font-weight:800;white-space:nowrap}
+.bubbles{position:absolute;right:18px;bottom:164px;display:flex;flex-direction:column;align-items:flex-end;gap:10px;z-index:5}
+.bub{display:flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:26px;background:var(--raised);border:1px solid var(--line);box-shadow:var(--shadow);font-size:14px;font-weight:700}
+.bub .gic{width:40px;height:40px;border-radius:20px;font-size:20px}
+.bub span{display:block;font-size:11.5px;font-weight:500;color:var(--ink2)}
+.cap{font-size:12px;line-height:16px;color:var(--ink3);text-align:center;margin:6px 16px 0}
+</style>
+</head>
+<body>
+<main class="page" id="page">
+  <section class="intro">
+    <div class="eyebrow">Conversation · 23/09</div>
+    <h1>Où mettre les 2 jeux</h1>
+    <p class="lede"><b>La base</b> (codée) : le « + » ne porte plus que <b>Take Rush</b> et <b>KnowMe</b>. Dessous, <b>5 autres façons</b> de les placer dans la conv — à combiner avec la base ou à la place.</p>
+    <div class="toggle" id="theme"><button data-t="light">Clair</button><button data-t="dark">Sombre</button></div>
+  </section>
+</main>
+<script>
+const AV_MAYA = 'img/maya.jpg';
+const SBAR = '<div class="sbar"><span>16:30</span><span><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-high"></i></span></div>';
+function head(extra){ return `<div class="head"><i class="ph ph-caret-left back"></i><div class="av" style="background-image:url(${AV_MAYA})"></div><div class="nm">Maya Patel<small>@maya_patel</small></div><div class="sp"></div>${extra||''}<div class="ib"><i class="ph ph-dots-three"></i></div></div>`; }
+function thread(extra){ return `<div class="thread">
+  <div class="day">Aujourd'hui 14:02</div>
+  <div class="b t">t'as vu le take sur les trottinettes 😂</div>
+  <div class="b m">ouais j'ai voté non direct</div>
+  <div class="b t">t'es chaud une partie ce soir ?</div>
+  ${extra||''}
+</div>`; }
+function bar(opts){ opts=opts||{}; return `<div class="bar"><div class="plus${opts.plusOn?' on':''}"><i class="ph ph-${opts.plusOn?'x':'plus'}"></i></div><div class="field">Message…</div><i class="ph ph-gif g"></i><i class="ph ph-image g"></i><i class="ph ph-microphone g"></i><i class="ph ph-camera g"></i></div>`; }
+const RUSH = '<div class="gic g1"><i class="ph-fill ph-lightning"></i></div>';
+const KNOW = '<div class="gic g2"><i class="ph-fill ph-seal-question"></i></div>';
+const sections = [
+ { tag:'La base · codée', title:'Le « + » = les 2 jeux', why:'Le « + » ne sert plus qu’à jouer. <b>Deux grosses tuiles</b>, rien d’autre : GIF, galerie, micro et photo sont déjà dans la barre.',
+   body: SBAR+head()+thread()+`<div class="tray tile"><div class="it">${RUSH}<b>Take Rush</b><span>Record de Maya : 128</span></div><div class="it">${KNOW}<b>KnowMe</b><span>Tu me connais ?</span></div></div>`+bar({plusOn:true}),
+   notes:['C’est ce qui part au prochain build.','Chaque tuile dit déjà où on en est avec Maya (record, questions).'] },
+ { tag:'Idée 1', title:'Une manette dans l’en-tête', why:'Comme les boutons appel / vidéo d’Instagram : <b>une manette à côté du nom</b>, toujours là, qui ouvre les 2 jeux en petit menu.',
+   body: SBAR+head('<div class="ib on"><i class="ph ph-game-controller"></i></div>')+thread()+bar()+`<div class="veil"></div><div class="pop tile"><div class="row">${RUSH}<div><b>Take Rush</b><span>Défier Maya</span></div></div><div class="row">${KNOW}<div><b>KnowMe</b><span>Tu la connais ?</span></div></div></div>`,
+   notes:['Le « + » redevient libre (ou disparaît).','Le plus visible : le jeu est au même rang que la conversation.'] },
+ { tag:'Idée 2', title:'Deux pastilles au-dessus de la barre', why:'Quand la conv est calme (ou quand elle commence), <b>deux pastilles</b> flottent au-dessus de la barre, comme les réponses suggérées. Un tap lance le jeu.',
+   body: SBAR+head()+thread()+`<div class="chips"><div class="chip">${RUSH}Take Rush</div><div class="chip">${KNOW}KnowMe</div></div>`+bar(),
+   notes:['Elles s’effacent dès qu’on écrit, et reviennent après un silence.','Zéro tap pour les découvrir.'] },
+ { tag:'Idée 3', title:'La carte de défi dans le fil', why:'Le jeu devient <b>un message</b> : une carte dans la conversation avec le score entre vous deux, « Rejouer » et « KnowMe ». Elle remonte à chaque nouvelle partie.',
+   body: SBAR+head()+thread(`<div class="dcard"><div class="top">${RUSH}<div><b>Maya t’a battu·e à Take Rush</b><span>il y a 2 min · 128 contre 94</span></div></div><div class="score">3 <em>Maya · toi</em> 2</div><div class="btns"><div class="p">Rejouer</div><div>KnowMe</div></div></div>`)+bar(),
+   notes:['Le plus « social » : chaque partie relance la conv.','Le score tête-à-tête reste visible dans le fil.'] },
+ { tag:'Idée 4', title:'Un onglet « Jeux » dans la conv', why:'Sous l’en-tête, <b>Messages · Jeux</b>. L’onglet Jeux montre les 2 jeux en grand avec le <b>face-à-face</b> et l’historique.',
+   body: SBAR+head()+`<div class="seg"><div>Messages</div><div class="on">Jeux</div></div><div class="games"><div class="gbig"><div class="top">${RUSH}<div><b>Take Rush</b><span>Dernière partie hier</span></div></div><div class="h2h"><span>Maya</span><strong>3 – 2</strong><span>Toi</span></div><div class="hist">Record de Maya : 128 · le tien : 94</div><div class="btns"><div class="p">Défier Maya</div></div></div><div class="gbig"><div class="top">${KNOW}<div><b>KnowMe</b><span>12 questions</span></div></div><div class="h2h"><span>Tu la connais à</span><strong>75 %</strong><span></span></div><div class="btns"><div class="p">Jouer</div></div></div></div>`+bar(),
+   notes:['Donne une vraie « maison » aux jeux entre deux amis.','Un tap de plus pour jouer, mais tout l’historique au même endroit.'] },
+ { tag:'Idée 5', title:'L’orbe « à ton tour »', why:'Un <b>rond de jeu flottant</b> qui n’apparaît que quand c’est à toi de jouer (Maya a joué). Tap : il s’ouvre en deux bulles, une par jeu.',
+   body: SBAR+head()+thread()+`<div class="veil" style="opacity:.55"></div><div class="bubbles"><div class="bub">${RUSH}<div>Take Rush<span>Maya : 128 — à toi</span></div></div><div class="bub">${KNOW}<div>KnowMe<span>3 questions t’attendent</span></div></div></div><div class="orb g1"><i class="ph-fill ph-game-controller"></i><div class="badge">À toi</div></div>`+bar(),
+   notes:['Invisible tant qu’il n’y a rien à jouer : la conv reste propre.','Tour par tour : on revient dans la conv pour répondre au défi.'] },
+];
+const page = document.getElementById('page');
+for (const s of sections){
+  const h = document.createElement('div');
+  h.innerHTML = `<h2><small>${s.tag}</small>${s.title}</h2><p class="why">${s.why}</p><div class="phone">${s.body}</div><ul class="notes">${s.notes.map(n=>`<li>${n}</li>`).join('')}</ul>`;
+  page.appendChild(h);
+}
+(function(){
+  var root=document.documentElement, key='take-jeux-theme';
+  function apply(t){ if(t){root.setAttribute('data-theme',t)} else {root.removeAttribute('data-theme')}
+    var cur=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    [].forEach.call(document.querySelectorAll('#theme button'),function(b){b.classList.toggle('on',b.getAttribute('data-t')===cur)}) }
+  var saved=null; try{saved=localStorage.getItem(key)}catch(e){}
+  apply(saved);
+  [].forEach.call(document.querySelectorAll('#theme button'),function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-t');apply(t);try{localStorage.setItem(key,t)}catch(e){}})});
+})();
+</script>
+</body>
+</html>
