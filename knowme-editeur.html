@@ -248,7 +248,7 @@ const Q = {
 };
 function row(n, text, issue, style) {
   const st = style === 'status';
-  const lead = st ? `<div class="st ${issue ? 'w' : 'ok'}"><i class="ph${issue ? '-fill ph-pencil-simple' : '-bold ph-check'}"></i></div>` : '';
+  const lead = st ? `<div class="st ${issue ? 'w' : 'ok'}"><i class="${issue ? 'ph-fill ph-pencil-simple' : 'ph ph-check'}"></i></div>` : '';
   const sub = issue
     ? `<div class="is"><i class="ph-fill ph-warning-circle"></i>${issue}</div>`
     : st ? `<div class="okk">Prête</div>` : '';
